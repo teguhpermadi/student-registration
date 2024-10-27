@@ -9,6 +9,7 @@ use App\JobEnum;
 use App\Models\Student;
 use App\ReligionEnum;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -41,12 +42,11 @@ class StudentRegistration extends Page implements HasForms
     {
         $student = auth()->user()->student;
         // dd($student->toArray());
-        if($student){
+        if ($student) {
             $this->form->fill($student->toArray());
         } else {
             $this->form->fill();
         }
-
     }
 
     public function form(Form $form): Form
@@ -206,15 +206,38 @@ class StudentRegistration extends Page implements HasForms
                                 ->translateLabel()
                                 ->required(),
                         ]),
+                    Step::make('File Upload')
+                        ->schema([
+                            FileUpload::make('scan_akta_lahir')
+                                ->openable()
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->required(),
+                            FileUpload::make('scan_kartu_keluarga')
+                                ->openable()
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->required(),
+                            FileUpload::make('scan_ktp_ayah')
+                                ->openable()
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->required(),
+                            FileUpload::make('scan_ktp_ibu')
+                                ->openable()
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->required(),
+                            FileUpload::make('scan_nisn')
+                                ->openable()
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->required(),
+                        ]),
                 ])
                     ->skippable()
-                    // ->submitAction(new HtmlString(Blade::render(<<<BLADE
-                    //         <x-filament::button
-                    //             type="submit"
-                    //         >
-                    //             {{__("Submit")}}
-                    //         </x-filament::button>
-                    //     BLADE))),
+                // ->submitAction(new HtmlString(Blade::render(<<<BLADE
+                //         <x-filament::button
+                //             type="submit"
+                //         >
+                //             {{__("Submit")}}
+                //         </x-filament::button>
+                //     BLADE))),
             ])
             ->statePath('data');
     }

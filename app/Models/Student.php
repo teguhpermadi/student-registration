@@ -47,6 +47,11 @@ class Student extends Model
         'mother_phone',
         'date_received',
         'grade_received',
+        'scan_akta_lahir',
+        'scan_kartu_keluarga',
+        'scan_ktp_ayah',
+        'scan_ktp_ibu',
+        'scan_nisn',
     ];
 
     public function user()

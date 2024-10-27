@@ -54,6 +54,11 @@ return new class extends Migration
             $table->string('mother_phone')->nullable();
             $table->date('date_received')->nullable();
             $table->string('grade_received')->nullable();
+            $table->string('scan_akta_lahir')->nullable();
+            $table->string('scan_kartu_keluarga')->nullable();
+            $table->string('scan_ktp_ayah')->nullable();
+            $table->string('scan_ktp_ibu')->nullable();
+            $table->string('scan_nisn')->nullable();
             $table->timestamps();
         });
     }
