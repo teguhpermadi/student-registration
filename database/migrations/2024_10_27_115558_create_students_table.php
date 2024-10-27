@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(Student::class);
+            $table->foreignId('user_id')->constrained();
             $table->string('full_name');
             $table->string('nick_name');
             $table->enum('gender', ['male', 'female']);

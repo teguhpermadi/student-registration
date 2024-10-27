@@ -225,5 +225,21 @@
     "Web Server is Down": "Web server sedang turun",
     "Whoops!": "Aduh!",
     "Yes": "Ya",
-    "You are receiving this email because we received a password reset request for your account.": "Anda menerima surel ini karena kami menerima permintaan pengaturan ulang kata sandi untuk akun anda."
+    "You are receiving this email because we received a password reset request for your account.": "Anda menerima surel ini karena kami menerima permintaan pengaturan ulang kata sandi untuk akun anda.",
+    "full_name": "Nama Lengkap",
+    "nick_name": "Nama Panggilan",
+    "gender": "Jenis Kelamin",
+    "city_born": "Tempat Lahir",
+    "birthday": "Tanggal Lahir",
+    "nisn": "Nomor Induk Siswa Nasional",
+    "nik": "Nomor Induk Kependudukan",
+    "address": "Alamat",
+    "village": "Desa",
+    "district": "Kecamatan",
+    "city": "Kota",
+    "province": "Provinsi",
+    "poscode": "Kode Pos",
+    "previous_school": "Sekolah Asal",
+    "date_received": "Tanggal Diterima",
+    "grade_received": "Tingkat yang Diterima"
 }
