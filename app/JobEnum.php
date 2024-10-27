@@ -19,6 +19,19 @@ enum JobEnum: string implements HasLabel
     
     public function getLabel(): ?string
     {
-        return $this->name;
+        // return $this->name;
+
+        return match ($this) {
+            self::TIDAK_BEKERJA => 'TIDAK_BEKERJA',
+            self::PENSIUNAN => 'PENSIUNAN',
+            self::TNI => 'TNI',
+            self::POLRI => 'POLRI',
+            self::GURU => 'GURU',
+            self::DOSEN => 'DOSEN',
+            self::PEGAWAI_NEGERI => 'PEGAWAI NEGER',
+            self::PEGAWAI_SWASTA => 'PEGAWAI SWAST',
+            self::WIRASWASTA => 'WIRASWASTA',
+            self::LAINNYA => 'LAINNYA',
+        };
     }
 }
