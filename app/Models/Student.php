@@ -52,6 +52,9 @@ class Student extends Model
         'scan_ktp_ayah',
         'scan_ktp_ibu',
         'scan_nisn',
+        'photo',
+        'ttd_name',
+        'ttd'
     ];
 
     public function user()

@@ -59,6 +59,10 @@ return new class extends Migration
             $table->string('scan_ktp_ayah')->nullable();
             $table->string('scan_ktp_ibu')->nullable();
             $table->string('scan_nisn')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('ttd_name')->nullable();
+            $table->string('ttd')->nullable();
+            $table->boolean('agreement')->default(true);
             $table->timestamps();
         });
     }
