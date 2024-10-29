@@ -1,0 +1,49 @@
+$studentRegular = Student::where('academic_year_id', 1)
+                                ->where('category', 'Regular')
+                                ->count();
+                            $studentInklusi = Student::where('academic_year_id',1)
+                                ->where('category', 'Inklusi')
+                                ->count();
+$studentRegular = Student::where('academic_year_id', 1)
+  ->where('category', 'Regular')
+  ->count();
+$studentInklusi = Student::where('academic_year_id',1)
+  ->where('category', 'Inklusi')
+  ->count();
+$studentRegular
+$options = [];
+$get('academic_year_id') = 1;
+$academic = AcademicYear::find($get('academic_year_id'));
+$studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+  ->where('category', 'Regular')
+  ->count();
+$studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+  ->where('category', 'Inklusi')
+  ->count();
+if($studentRegular <= $academic->quota_regular){
+  $options['Regular'] = 'Regular';
+}
+$options = [];
+$get('academic_year_id') = 1;
+$academic = AcademicYear::find($get('academic_year_id'));
+$studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+  ->where('category', 'Regular')
+  ->count();
+$studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+  ->where('category', 'Inklusi')
+  ->count();
+if($studentRegular <= $academic->quota_regular){
+  $options['Regular'] = 'Regular';
+}
+$options = [];
+$get= 1;
+$academic = AcademicYear::find($get);
+$studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+  ->where('category', 'Regular')
+  ->count();
+$studentInklusi = Student::where('academic_year_id', $get)
+  ->where('category', 'Inklusi')
+  ->count();
+if($studentRegular <= $academic->quota_regular){
+  $options['Regular'] = 'Regular';
+}
