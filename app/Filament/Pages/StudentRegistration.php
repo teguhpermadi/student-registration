@@ -6,6 +6,7 @@ use App\ChildRelationEnum;
 use App\EducationEnum;
 use App\IncomeEnum;
 use App\JobEnum;
+use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Models\User;
 use App\ReligionEnum;
@@ -70,6 +71,9 @@ class StudentRegistration extends Page implements HasForms
                 Section::make('Student Identity')
                     ->columns(2)
                     ->schema([
+                        Select::make('academic_year_id')
+                            ->options(AcademicYear::all()->pluck('year', 'id'))
+                            ->required(),
                         TextInput::make('full_name')
                             ->translateLabel()
                             ->required(),
