@@ -8,6 +8,8 @@ class AcademicYear extends Model
 {
     protected $fillable = [
         'year',
+        'quota_regular',
+        'quota_inklusi'
     ];
 
     public function student()

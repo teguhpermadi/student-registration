@@ -27,6 +27,15 @@ class AcademicYearResource extends Resource
             ->schema([
                 TextInput::make('year')
                     ->mask('9999/9999')
+                    ->translateLabel()
+                    ->required(),
+                TextInput::make('quota_regular')
+                    ->translateLabel()
+                    ->numeric()
+                    ->required(),
+                TextInput::make('quota_inklusi')
+                    ->translateLabel()
+                    ->numeric()
                     ->required(),
             ]);
     }
@@ -36,6 +45,8 @@ class AcademicYearResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('year'),
+                TextColumn::make('quota_regular'),
+                TextColumn::make('quota_inklusi'),
                 TextColumn::make('student_count')->counts('student'),
             ])
             ->filters([

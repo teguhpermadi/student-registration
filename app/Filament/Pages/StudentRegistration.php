@@ -55,7 +55,6 @@ class StudentRegistration extends Page implements HasForms
 
     public ?array $data = [];
     public $user;
-    public $categoryInklusi = true;
 
     public function mount(): void
     {
@@ -79,19 +78,41 @@ class StudentRegistration extends Page implements HasForms
                     ->columns(2)
                     ->schema([
                         Select::make('academic_year_id')
-                        ->options(AcademicYear::all()->pluck('year', 'id'))
-                        ->required(),
-                    Select::make('category')
-                        ->options(CategoryEnum::class)
-                        ->live()
-                        ->required(),
+                            ->options(AcademicYear::all()->pluck('year', 'id'))
+                            ->reactive()
+                            ->required(),
+                        Select::make('category')
+                            ->options(function (Get $get) {
+                                $option = [];
+                                if ($get('academic_year_id')) {
+                                    $academic = AcademicYear::find($get('academic_year_id'));
+                                    $studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Regular')
+                                        ->count();
+                                    $studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Inklusi')
+                                        ->count();
+
+                                    if ($studentRegular < $academic->quota_regular) {
+                                        $option['Regular'] = 'Regular';
+                                    }
+
+                                    if ($studentInklusi < $academic->quota_inklusi) {
+                                        $option['Inklusi'] = 'Inklusi';
+                                    }
+                                }
+
+                                return $option;
+                            })
+                            ->reactive()
+                            ->required(),
                     ]),
                 Section::make('Student Identity')
                     ->columns(2)
                     ->schema([
                         TextInput::make('full_name')
                             ->translateLabel()
-                            ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
+                            ->dehydrateStateUsing(fn(string $state): string => ucwords($state))
                             ->required(),
                         TextInput::make('nick_name')
                             ->translateLabel()
@@ -356,7 +377,7 @@ class StudentRegistration extends Page implements HasForms
         ];
 
         $post = Student::updateOrCreate($student_id, $this->form->getState());
-        
+
         Notification::make()
             ->title('Saved successfully')
             ->success()

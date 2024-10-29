@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
             $table->string('year');
+            $table->string('quota_regular');
+            $table->string('quota_inklusi');
             $table->timestamps();
         });
     }
