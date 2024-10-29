@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\CategoryEnum;
 use App\ChildRelationEnum;
 use App\EducationEnum;
 use App\IncomeEnum;
@@ -13,6 +14,7 @@ use App\ReligionEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -26,6 +28,8 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Http\UploadedFile;
@@ -51,6 +55,7 @@ class StudentRegistration extends Page implements HasForms
 
     public ?array $data = [];
     public $user;
+    public $categoryInklusi = true;
 
     public function mount(): void
     {
@@ -70,14 +75,23 @@ class StudentRegistration extends Page implements HasForms
             ->schema([
                 Hidden::make('user_id')
                     ->default(auth()->user()->id),
-                Section::make('Student Identity')
+                Section::make('Formulir PPDB')
                     ->columns(2)
                     ->schema([
                         Select::make('academic_year_id')
-                            ->options(AcademicYear::all()->pluck('year', 'id'))
-                            ->required(),
+                        ->options(AcademicYear::all()->pluck('year', 'id'))
+                        ->required(),
+                    Select::make('category')
+                        ->options(CategoryEnum::class)
+                        ->live()
+                        ->required(),
+                    ]),
+                Section::make('Student Identity')
+                    ->columns(2)
+                    ->schema([
                         TextInput::make('full_name')
                             ->translateLabel()
+                            ->dehydrateStateUsing(fn (string $state): string => ucwords($state))
                             ->required(),
                         TextInput::make('nick_name')
                             ->translateLabel()

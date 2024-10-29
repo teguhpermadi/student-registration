@@ -16,9 +16,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('academic_year_id')->constrained();
+            $table->string('category')->nullable();
             $table->string('full_name');
             $table->string('nick_name');
-            $table->enum('gender', ['male', 'female']);
+            $table->string('gender');
             $table->string('city_born');
             $table->date('birthday');
             $table->string('nisn');

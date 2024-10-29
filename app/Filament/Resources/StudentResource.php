@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\CategoryEnum;
 use App\ChildRelationEnum;
 use App\EducationEnum;
 use App\IncomeEnum;
@@ -11,6 +12,7 @@ use App\Models\User;
 use App\ReligionEnum;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Models\AcademicYear;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
@@ -53,6 +55,17 @@ class StudentResource extends Resource
             ->schema([
                 Hidden::make('user_id')
                     ->default(auth()->user()->id),
+                Section::make('Formulir PPDB')
+                    ->columns(2)
+                    ->schema([
+                        Select::make('academic_year_id')
+                            ->options(AcademicYear::all()->pluck('year', 'id'))
+                            ->required(),
+                        Select::make('category')
+                            ->options(CategoryEnum::class)
+                            ->live()
+                            ->required(),
+                    ]),
                 Section::make('Student Identity')
                     ->columns(2)
                     ->schema([
@@ -312,6 +325,7 @@ class StudentResource extends Resource
             ->columns([
                 TextColumn::make('full_name'),
                 TextColumn::make('gender'),
+                TextColumn::make('category'),
                 TextColumn::make('previous_school'),
                 TextColumn::make('updated_at'),
             ])
@@ -321,7 +335,7 @@ class StudentResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 ActionsAction::make('preview')
-                    ->url(fn (Student $record): string => route('print-preview', $record))
+                    ->url(fn(Student $record): string => route('print-preview', $record))
                     ->openUrlInNewTab(),
                 // Tables\Actions\EditAction::make(),
             ])

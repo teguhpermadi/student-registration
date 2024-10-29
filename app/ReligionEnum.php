@@ -16,6 +16,14 @@ enum ReligionEnum: string implements HasLabel
     
     public function getLabel(): ?string
     {
-        return $this->name;
+        // return $this->name;
+        return match ($this) {
+            self::Islam => 'Islam',
+            self::Kristen => 'Kristen',
+            self::Katholik => 'Katholik',
+            self::Hindu => 'Hindu',
+            self::Budha => 'Budha',
+            self::Konghucu => 'Konghucu',
+        };
     }
 }
