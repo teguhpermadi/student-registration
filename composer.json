@@ -8,6 +8,7 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
         "bezhansalleh/filament-shield": "^3.2",
+        "codewithdennis/filament-simple-alert": "^3.0",
         "filament/filament": "^3.2",
         "laravel-lang/common": "^6.4",
         "laravel/framework": "^11.9",
