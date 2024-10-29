@@ -12,6 +12,7 @@ use App\Models\Student;
 use App\Models\User;
 use App\ReligionEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use CodeWithDennis\SimpleAlert\Components\Forms\SimpleAlert;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
@@ -72,6 +73,50 @@ class StudentRegistration extends Page implements HasForms
     {
         return $form
             ->schema([
+                SimpleAlert::make('instruction')
+                    ->title('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: Pas foto 3 x 4, Scan Akta Lahir, Scan Kartu Keluarga, Scan KTP Ayah, Scan KTP Ibu, Scan Kartu NISN')
+                    ->border()
+                    ->info(),
+                SimpleAlert::make('quota_regular')
+                    ->title('Kuota Regular sudah terpenuhi')
+                    ->border()
+                    ->visible(function(Get $get){
+                        // jika academic year id dipilih
+                        if ($get('academic_year_id')) {
+                            $academic = AcademicYear::find($get('academic_year_id'));
+                            $studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Regular')
+                                        ->count();
+                            // periksa jumlah siswa dan quota
+                            if($studentRegular == $academic->quota_regular){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    })
+                    ->reactive()
+                    ->warning(),
+                SimpleAlert::make('quota_inklusi')
+                    ->title('Kuota Inklusi sudah terpenuhi')
+                    ->border()
+                    ->visible(function(Get $get){
+                        // jika academic year id dipilih
+                        if ($get('academic_year_id')) {
+                            $academic = AcademicYear::find($get('academic_year_id'));
+                            $studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Inklusi')
+                                        ->count();
+                            // periksa jumlah siswa dan quota
+                            if($studentInklusi == $academic->quota_inklusi){
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    })
+                    ->reactive()
+                    ->warning(),
                 Hidden::make('user_id')
                     ->default(auth()->user()->id),
                 Section::make('Formulir PPDB')
