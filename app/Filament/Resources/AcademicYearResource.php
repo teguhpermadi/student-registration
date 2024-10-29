@@ -36,7 +36,7 @@ class AcademicYearResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('year'),
-                TextColumn::make('student_count'),
+                TextColumn::make('student_count')->counts('student'),
             ])
             ->filters([
                 //

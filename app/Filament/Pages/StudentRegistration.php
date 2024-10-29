@@ -94,9 +94,11 @@ class StudentRegistration extends Page implements HasForms
                             ->required(),
                         TextInput::make('nisn')
                             ->translateLabel()
+                            ->numeric()
                             ->helperText('nomor induk siswa nasional')
                             ->required(),
                         TextInput::make('nik')
+                            ->numeric()
                             ->helperText('nomor induk kependudukan siswa')
                             ->translateLabel()
                             ->required(),
@@ -125,6 +127,7 @@ class StudentRegistration extends Page implements HasForms
                             ->translateLabel()
                             ->required(),
                         TextInput::make('poscode')
+                            ->numeric()
                             ->translateLabel()
                             ->required(),
                     ]),
@@ -181,6 +184,8 @@ class StudentRegistration extends Page implements HasForms
                             ->options(IncomeEnum::class)
                             ->required(),
                         TextInput::make('father_phone')
+                            ->prefix('+62')
+                            ->numeric()
                             ->translateLabel()
                             ->required(),
                     ]),
@@ -227,6 +232,8 @@ class StudentRegistration extends Page implements HasForms
                             ->options(IncomeEnum::class)
                             ->required(),
                         TextInput::make('mother_phone')
+                            ->prefix('+62')
+                            ->numeric()
                             ->translateLabel()
                             ->required(),
                     ]),
