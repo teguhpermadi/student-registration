@@ -224,15 +224,9 @@ class StudentRegistration extends Page implements HasForms
                 Section::make('Father Identity')
                     ->columns(2)
                     ->schema([
-                        Select::make('father_status')
-                            ->options([
-                                'alive' => 'Hidup',
-                                'die' => 'Meninggal dunia'
-                            ])
-                            ->default('alive')
-                            ->required(),
                         TextInput::make('father_nik')
                             ->translateLabel()
+                            ->reactive()
                             ->required(),
                         TextInput::make('father_name')
                             ->translateLabel()
@@ -272,13 +266,6 @@ class StudentRegistration extends Page implements HasForms
                 Section::make('Mother Identity')
                     ->columns(2)
                     ->schema([
-                        Select::make('mother_status')
-                            ->options([
-                                'alive' => 'Hidup',
-                                'die' => 'Meninggal dunia'
-                            ])
-                            ->default('alive')
-                            ->required(),
                         TextInput::make('mother_nik')
                             ->translateLabel()
                             ->required(),

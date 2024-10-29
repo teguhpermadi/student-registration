@@ -32,7 +32,6 @@ return new class extends Migration
             $table->string('previous_school');
             $table->string('address_previous_school')->nullable();
             $table->string('poscode')->nullable();
-            $table->string('father_status')->nullable();
             $table->string('father_nik')->nullable();
             $table->string('father_name')->nullable();
             $table->string('father_city_born')->nullable();
@@ -43,7 +42,6 @@ return new class extends Migration
             $table->string('father_job')->nullable();
             $table->string('father_income')->nullable();
             $table->string('father_phone')->nullable();
-            $table->string('mother_status')->nullable();
             $table->string('mother_nik')->nullable();
             $table->string('mother_name')->nullable();
             $table->string('mother_city_born')->nullable();
