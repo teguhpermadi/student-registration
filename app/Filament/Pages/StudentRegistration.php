@@ -10,6 +10,7 @@ use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Models\User;
 use App\ReligionEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -42,6 +43,7 @@ use function PHPSTORM_META\map;
 class StudentRegistration extends Page implements HasForms
 {
     use InteractsWithForms;
+    use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
