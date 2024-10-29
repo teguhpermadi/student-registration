@@ -29,6 +29,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action as ActionsAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -319,6 +320,9 @@ class StudentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                ActionsAction::make('preview')
+                    ->url(fn (Student $record): string => route('print-preview', $record))
+                    ->openUrlInNewTab(),
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
