@@ -7,15 +7,15 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Print Preview</title>
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ asset('css/pdf.css') }}" type="text/css">
+    {{-- <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'> --}}
+    {{-- <link rel="stylesheet" href="{{ asset('css/pdf.css') }}" type="text/css"> --}}
 </head>
 
 <body>
     <img src="{{ asset('image/logo.png') }}" alt="logo" height="100" class="center-img">
     <h1 class="center">Formulir Pendaftaran Peserta Didik Baru</h1>
     <h2 class="center">MI AR RIDLO</h2>
-    <h3 class="center">Tahun Pelajaran : 2025/2026</h3>
+    <h3 class="center">Tahun Pelajaran : {{$student->academicYear->year}}</h3>
     <hr>
     <table>
         <tr>

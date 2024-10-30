@@ -343,7 +343,7 @@ class StudentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                ActionsAction::make('preview')
+                ActionsAction::make('download')
                     ->url(fn(Student $record): string => route('print-preview', $record))
                     ->openUrlInNewTab(),
                 // Tables\Actions\EditAction::make(),
