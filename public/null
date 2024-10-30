@@ -44,3 +44,25 @@ Payment::all()
 Payment::all()
 Payment::all()
 Payment::all()
+Payment::where('user_id', 2)
+Payment::where('user_id', 2)->money
+Payment::where('user_id', 2)->get()
+Payment::where('user_id', 2)->get()->money()
+Payment::where('user_id', 2)->get()->sum_money
+Payment::where('user_id', 2)->get()->money_sum
+Payment::where('user_id', 2)->money_count
+Payment::where('user_id', 2)->money_count()
+Payment::where('user_id', 2)->count('money')
+Payment::where('user_id', 2)->sum('money')
+User::find(2)
+User::find(2)
+  
+  
+User::find(2)
+  
+  
+  $2y$12$fHeJpggRCP7dQ6UPqf7SAu0VhjVuNQNJjo7i4DCmh8dlfPSpM7woG
+User::find(2)
+  
+  
+  
