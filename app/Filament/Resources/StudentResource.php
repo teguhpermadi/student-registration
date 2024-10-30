@@ -29,6 +29,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action as ActionsAction;
@@ -51,6 +52,15 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('student');
+    }
+
+    protected static ?string $title = 'Siswa';
+
+    protected static ?string $breadcrumb = 'Siswa';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -62,232 +72,241 @@ class StudentResource extends Resource
                     ->schema([
                         Select::make('academic_year_id')
                             ->options(AcademicYear::all()->pluck('year', 'id'))
+                            ->label(__('academic_year_id'))
+                            ->reactive()
                             ->required(),
                         Select::make('category')
-                            ->options(CategoryEnum::class)
-                            ->live()
+                            ->options([
+                                'Regular' => 'Regular',
+                                'Inklusi' => 'Inklusi',
+                            ])
+                            ->label(__('category'))
+                            ->reactive()
                             ->required(),
                     ]),
-                Section::make('Student Identity')
+                Section::make('Identitas Siswa')
                     ->columns(2)
                     ->schema([
                         TextInput::make('full_name')
-                            ->translateLabel()
+                            ->label(__('full_name'))
+                            ->dehydrateStateUsing(fn(string $state): string => ucwords($state))
                             ->required(),
                         TextInput::make('nick_name')
-                            ->translateLabel()
+                            ->label(__('nick_name'))
                             ->required(),
                         Select::make('gender')
-                            ->translateLabel()
+                            ->label(__('gender'))
                             ->options(['male' => 'Laki-laki', 'female' => 'Perempuan'])
                             ->required(),
                         TextInput::make('city_born')
-                            ->translateLabel()
+                            ->label(__('city_born'))
                             ->required(),
                         DatePicker::make('birthday')
-                            ->translateLabel()
+                            ->label(__('birthday'))
                             ->required(),
                         TextInput::make('nisn')
-                            ->translateLabel()
+                            ->label(__('nisn'))
+                            ->numeric()
                             ->helperText('nomor induk siswa nasional')
                             ->required(),
                         TextInput::make('nik')
+                            ->numeric()
                             ->helperText('nomor induk kependudukan siswa')
-                            ->translateLabel()
+                            ->label(__('nik'))
                             ->required(),
-                            TextInput::make('number_akta_lahir')
+                        TextInput::make('number_akta_lahir')
                             ->helperText('nomor akta lahir')
-                            ->translateLabel()
+                            ->label(__('number_akta_lahir'))
                             ->required(),
                         TextInput::make('number_kartu_keluarga')
                             ->helperText('nomor kartu keluarga')
-                            ->translateLabel()
+                            ->label(__('number_kartu_keluarga'))
                             ->required(),
                         FileUpload::make('photo')
                             ->openable()
+                            ->directory('photo')
                             ->image()
+                            ->label(__('photo'))
                             ->helperText('Pas foto 3x4')
                             ->required(),
                     ]),
-                Section::make('Address')
+                Section::make('Alamat')
                     ->columns(2)
                     ->schema([
                         TextInput::make('address')
-                            ->translateLabel()
+                            ->label(__('address'))
                             ->required(),
                         TextInput::make('village')
-                            ->translateLabel()
+                            ->label(__('village'))
                             ->required(),
                         TextInput::make('district')
-                            ->translateLabel()
+                            ->label(__('district'))
                             ->required(),
                         TextInput::make('city')
-                            ->translateLabel()
+                            ->label(__('city'))
                             ->required(),
                         TextInput::make('province')
-                            ->translateLabel()
+                            ->label(__('province'))
                             ->required(),
                         TextInput::make('poscode')
-                            ->translateLabel()
+                            ->numeric()
+                            ->label(__('poscode'))
                             ->required(),
                     ]),
-                Section::make('Data Previous School')
+                Section::make('Data Sekolah Sebelumnya')
                     ->columns(2)
                     ->schema([
                         TextInput::make('previous_school')
-                            ->translateLabel()
+                            ->label(__('previous_school'))
                             ->required(),
                         TextInput::make('address_previous_school')
-                            ->translateLabel()
+                            ->label(__('address_previous_school'))
                             ->required(),
                     ]),
-                Section::make('Father Identity')
+                Section::make('Identitas Ayah')
                     ->columns(2)
                     ->schema([
-                        Select::make('father_status')
-                            ->options([
-                                'alive' => 'Hidup',
-                                'die' => 'Meninggal dunia'
-                            ])
-                            ->default('alive')
-                            ->required(),
                         TextInput::make('father_nik')
-                            ->translateLabel()
+                            ->label(__('father_nik'))
+                            ->reactive()
                             ->required(),
                         TextInput::make('father_name')
-                            ->translateLabel()
+                            ->label(__('father_name'))
                             ->required(),
                         DatePicker::make('father_birthday')
-                            ->translateLabel()
+                            ->label(__('father_birthday'))
                             ->required(),
                         TextInput::make('father_city_born')
-                            ->translateLabel()
+                            ->label(__('father_city_born'))
                             ->required(),
                         Select::make('father_religion')
-                            ->translateLabel()
+                            ->label(__('father_religion'))
                             ->options(ReligionEnum::class)
                             ->required(),
                         Select::make('father_education')
-                            ->translateLabel()
+                            ->label(__('father_education'))
                             ->options(EducationEnum::class)
                             ->required(),
                         Radio::make('father_relation')
-                            ->translateLabel()
+                            ->label(__('father_relation'))
                             ->options(ChildRelationEnum::class)
                             ->required(),
                         Radio::make('father_job')
-                            ->translateLabel()
+                            ->label(__('father_job'))
                             ->options(JobEnum::class)
                             ->required(),
                         Radio::make('father_income')
-                            ->translateLabel()
+                            ->label(__('father_income'))
                             ->options(IncomeEnum::class)
                             ->required(),
                         TextInput::make('father_phone')
-                            ->translateLabel()
+                            ->prefix('+62')
+                            ->numeric()
+                            ->label(__('father_phone'))
                             ->required(),
                     ]),
-                Section::make('Mother Identity')
+                Section::make('Identitas Ibu')
                     ->columns(2)
                     ->schema([
-                        Select::make('mother_status')
-                            ->options([
-                                'alive' => 'Hidup',
-                                'die' => 'Meninggal dunia'
-                            ])
-                            ->default('alive')
-                            ->required(),
                         TextInput::make('mother_nik')
-                            ->translateLabel()
+                            ->label(__('mother_nik'))
                             ->required(),
                         TextInput::make('mother_name')
-                            ->translateLabel()
+                            ->label(__('mother_name'))
                             ->required(),
                         DatePicker::make('mother_birthday')
-                            ->translateLabel()
+                            ->label(__('mother_birthday'))
                             ->required(),
                         TextInput::make('mother_city_born')
-                            ->translateLabel()
+                            ->label(__('mother_city_born'))
                             ->required(),
                         Select::make('mother_religion')
-                            ->translateLabel()
+                            ->label(__('mother_religion'))
                             ->options(ReligionEnum::class)
                             ->required(),
                         Select::make('mother_education')
-                            ->translateLabel()
+                            ->label(__('mother_education'))
                             ->options(EducationEnum::class)
                             ->required(),
                         Radio::make('mother_relation')
-                            ->translateLabel()
+                            ->label(__('mother_relation'))
                             ->options(ChildRelationEnum::class)
                             ->required(),
                         Radio::make('mother_job')
-                            ->translateLabel()
+                            ->label(__('mother_job'))
                             ->options(JobEnum::class)
                             ->required(),
                         Radio::make('mother_income')
-                            ->translateLabel()
+                            ->label(__('mother_income'))
                             ->options(IncomeEnum::class)
                             ->required(),
                         TextInput::make('mother_phone')
-                            ->translateLabel()
+                            ->prefix('+62')
+                            ->numeric()
+                            ->label(__('mother_phone'))
                             ->required(),
                     ]),
-                Section::make('File Upload')
+                Section::make('Unggah File')
                     ->columns(2)
                     ->schema([
                         FileUpload::make('scan_akta_lahir')
                             ->openable()
+                            ->directory('akta_lahir')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
+                            ->directory('kartu_keluarga')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
                             ->openable()
+                            ->directory('ktp')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
+                            ->directory('ktp')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
+                            ->directory('nisn')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
 
                     ]),
-                Section::make('Agreement')
+                Section::make('Persetujuan')
                     ->schema([
                         Checkbox::make('agreement')
                             ->label('Data yang sudah saya isikan adalah benar.')
                             ->accepted(),
                         TextInput::make('ttd_name')
+                            ->label(__('ttd_name'))
                             ->required(),
                         Grid::make([
                             'default' => 2,
                         ])
                             ->schema([
-                                // SignaturePad::make('signature')
-                                //     ->label(__('Sign here'))
-                                //     ->downloadable(false)
-                                //     ->backgroundColor('white')
-                                //     ->undoable()
-                                //     ->live()
-                                //     ->visible(fn($get) => empty($get('ttd')))
-                                //     ->confirmable(true)
-                                //     ->afterStateUpdated(function ($state, $livewire) {
-                                //         if ($state) {
-                                //             $base64_string = substr($state, strpos($state, ',') + 1);
-                                //             $image_data = base64_decode($base64_string);
-                                //             $file_name = Str::random(40);
-                                //             $file = self::createTemporaryFileUploadFromUrl($image_data, $file_name);
-                                //             $livewire->dispatch('test', $file);
-                                //         }
-                                //     }),
+                                SignaturePad::make('signature')
+                                    ->label(__('ttd'))
+                                    ->downloadable(false)
+                                    ->backgroundColor('white')
+                                    ->undoable()
+                                    ->live()
+                                    ->visible(fn($get) => empty($get('ttd')))
+                                    ->confirmable(true)
+                                    ->afterStateUpdated(function ($state, $livewire) {
+                                        if ($state) {
+                                            $base64_string = substr($state, strpos($state, ',') + 1);
+                                            $image_data = base64_decode($base64_string);
+                                            $file_name = Str::random(40);
+                                            $file = self::createTemporaryFileUploadFromUrl($image_data, $file_name);
+                                            $livewire->dispatch('test', $file);
+                                        }
+                                    }),
                                 FileUpload::make('ttd')
-                                    ->label('Signature Result')
+                                    ->label(__('ttd'))
                                     ->downloadable()
                                     ->disabled()
                                     ->dehydrated()
@@ -296,7 +315,7 @@ class StudentResource extends Resource
                                     // ->hintAction(
                                     //     Action::make('Delete')
                                     //         ->icon('heroicon-m-trash')
-                                    //         ->visible(fn($state) => filled($this->user['ttd']) || $state)
+                                    //         // ->visible(fn($state) => filled($this->user['ttd']) || $state)
                                     //         ->visible(fn($state) => filled($this->user) || $state)
                                     //         ->requiresConfirmation()
                                     //         ->action(function ($state, $set) {
@@ -315,14 +334,14 @@ class StudentResource extends Resource
                                     //             }
                                     //         })
                                     // )
-                                    ->extraAlpineAttributes([
-                                        'x-on:test.window' => '
-                                                const pond = FilePond.find($el.querySelector(".filepond--root"));
-                                                setTimeout(() => {
-                                                    pond.removeFiles({ revert: false });
-                                                    pond.addFile($event.detail);
-                                                }, 750);',
-                                    ])
+                                    // ->extraAlpineAttributes([
+                                    //     'x-on:test.window' => '
+                                    //             const pond = FilePond.find($el.querySelector(".filepond--root"));
+                                    //             setTimeout(() => {
+                                    //                 pond.removeFiles({ revert: false });
+                                    //                 pond.addFile($event.detail);
+                                    //             }, 750);',
+                                    // ])
                                     ->image(),
                             ]),
                     ]),
@@ -334,13 +353,19 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('photo')
+                    ->label(__('photo'))
                     ->circular(),
                 TextColumn::make('full_name')
+                    ->label(__('full_name'))
                     ->searchable(),
-                TextColumn::make('gender'),
-                TextColumn::make('category'),
-                TextColumn::make('previous_school'),
-                TextColumn::make('updated_at'),
+                TextColumn::make('gender')
+                    ->label(__('gender')),
+                TextColumn::make('category')
+                    ->label(__('category')),
+                TextColumn::make('previous_school')
+                    ->label(__('previous_school')),
+                TextColumn::make('updated_at')
+                    ->label(__('updated_at')),
             ])
             ->filters([
                 SelectFilter::make('category')
@@ -348,6 +373,7 @@ class StudentResource extends Resource
                         'Regular' => 'Regular',
                         'Inklusi' => 'Inklusi',
                     ])
+                    ->label(__('category')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

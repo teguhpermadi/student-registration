@@ -23,20 +23,29 @@ class AcademicYearResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('academic_year');
+    }
+
+    protected static ?string $title = 'Tahun Akademik';
+
+    protected static ?string $breadcrumb = 'Tahun Akademik';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('year')
                     ->mask('9999/9999')
-                    ->translateLabel()
+                    ->label(__('year'))
                     ->required(),
                 TextInput::make('quota_regular')
-                    ->translateLabel()
+                    ->label(__('quota_regular'))
                     ->numeric()
                     ->required(),
                 TextInput::make('quota_inklusi')
-                    ->translateLabel()
+                    ->label(__('quota_inklusi'))
                     ->numeric()
                     ->required(),
             ]);
@@ -46,11 +55,17 @@ class AcademicYearResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('year'),
-                TextColumn::make('quota_regular'),
-                TextColumn::make('quota_inklusi'),
-                TextColumn::make('student_count')->counts('student'),
+                TextColumn::make('year')
+                    ->label(__('year')),
+                TextColumn::make('quota_regular')
+                    ->label(__('quota_regular')),
+                TextColumn::make('quota_inklusi')
+                    ->label(__('quota_inklusi')),
+                TextColumn::make('student_count')
+                    ->label(__('student_count'))
+                    ->counts('student'),
                 ToggleColumn::make('active')
+                    ->label(__('active')),
             ])
             ->filters([
                 //
