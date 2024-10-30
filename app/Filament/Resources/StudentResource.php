@@ -32,7 +32,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action as ActionsAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -323,14 +325,21 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('full_name'),
+                ImageColumn::make('photo')
+                    ->circular(),
+                TextColumn::make('full_name')
+                    ->searchable(),
                 TextColumn::make('gender'),
                 TextColumn::make('category'),
                 TextColumn::make('previous_school'),
                 TextColumn::make('updated_at'),
             ])
             ->filters([
-                //
+                SelectFilter::make('category')
+                    ->options([
+                        'Regular' => 'Regular',
+                        'Inklusi' => 'Inklusi',
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
