@@ -54,7 +54,7 @@ class PrintController extends Controller
         $templateProcessor->setValue('mother_income', $student->mother_income);
         $templateProcessor->setValue('mother_phone', $student->mother_phone);
         $templateProcessor->setValue('updated_at', $student->updated_at->format('j F Y'));
-        
+
         $templateProcessor->setImageValue('photo', storage_path('/app/public/' . $student->photo));
         $templateProcessor->setImageValue('ttd', storage_path('/app/public/' . $student->ttd));
         $templateProcessor->setValue('ttd_name', $student->ttd_name);
@@ -63,7 +63,39 @@ class PrintController extends Controller
         $filename = $student->full_name . '.docx';
         $file_path = storage_path('/app/public/' . $filename);
         $templateProcessor->saveAs($file_path);
-        
-        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
+
+        // return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
+        return $this->zipArchive($id);
+    }
+
+    public function zipArchive($id)
+    {
+        $student = Student::find($id);
+        $filename = $student->full_name . '.docx';
+        $file_path = public_path('storage/' . $filename);
+
+        $zip_file = $student->full_name . '.zip'; // Name of our archive to download
+
+        // Initializing PHP class
+        $zip = new \ZipArchive();
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+        // Adding file: second parameter is what will the path inside of the archive
+        // So it will create another folder called "storage/" inside ZIP, and put the file there.
+        $zip->addFile(public_path('storage/'.$filename), $filename);
+        $zip->addFile(public_path('storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
+        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
+        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
+        $zip->addFile(public_path('storage/'.$student->scan_ktp_ayah), $student->scan_ktp_ayah);
+        $zip->addFile(public_path('storage/'.$student->scan_ktp_ibu), $student->scan_ktp_ibu);
+        $zip->addFile(public_path('storage/'.$student->scan_nisn), $student->scan_nisn);
+
+        $zip->close();
+
+        // delete file word
+        unlink($file_path);
+
+        // We return the file immediately after download
+        return response()->download($zip_file)->deleteFileAfterSend(true);
     }
 }
