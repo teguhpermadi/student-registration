@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->string('money');
             $table->string('proof');
+            $table->string('for');
+            $table->boolean('verified')->default(false);
+            $table->date('date_of_verifying')->nullable();
             $table->timestamps();
         });
     }

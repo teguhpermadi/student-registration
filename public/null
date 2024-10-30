@@ -1,5 +1,46 @@
-storage_path('');
-storage_path('formulir');
-storage_path('formulir ppdb');
-public_path('formulir ppdb');
-Student::all()
+auth()
+auth()->user()
+auth()->user()->hasRole('writer')
+auth()->user()->hasRole('student')
+auth()->id()
+if(auth()->user()->role == "student"){
+                    return true;
+                } else {
+  
+ return false;
+}
+if(auth()->user()->role == "student"){
+                    return true;
+                } else {
+  
+ return false;
+}
+if(auth()->user()->role === "student"){
+                    return true;
+                } else {
+  
+ return false;
+}
+if(auth()->user()->role === "student"){
+                    return true;
+                } else {
+  
+ return false;
+}
+if(auth()->user()->role === "student"){
+                    return true;
+                } else {
+  
+ return false;
+}
+
+auth()->user()->role
+auth()->user()->role
+auth()->role
+auth()
+auth()->user()->hasRole('student')
+Payment::all()
+Payment::all()
+Payment::all()
+Payment::all()
+Payment::all()

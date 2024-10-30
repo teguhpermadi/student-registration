@@ -2,16 +2,27 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
     protected $fillable = [
-        'proof'
+        'user_id',
+        'money',
+        'proof',
+        'for',
+        'verified',
+        'date_of_verifying',
     ];
 
-    public function student()
+    protected $casts = [
+        'money' => MoneyCast::class,
+        'for' => 'array',
+    ];
+
+    public function user()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 }

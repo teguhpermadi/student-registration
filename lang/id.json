@@ -283,5 +283,6 @@
     "quota_regular" : "Kuota regular",
     "quota_inklusi" : "Kuota inklusi",
     "student_count" : "Jumlah siswa",
-    "active" : "Aktif"
+    "active" : "Aktif",
+    "proof_of_payment" : "Bukti pembayaran"
 }
