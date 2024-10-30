@@ -9,14 +9,11 @@ use PhpOffice\PhpWord\TemplateProcessor;
 
 class PrintController extends Controller
 {
-    public function print_preview($id)
+    public function download($id)
     {
         $student = Student::find($id);
-        //$pdf = Pdf::loadView('print-preview', ['student' => $student]);
-        // return $pdf->download();
-        // dd($student);
-        //return view('print-preview', ['student' => $student]);
         $templateProcessor = new TemplateProcessor(storage_path('/template/template formulir.docx'));
+
         $templateProcessor->setValue('year', $student->academicYear->year);
         $templateProcessor->setValue('category', $student->category);
         $templateProcessor->setValue('full_name', $student->full_name);
@@ -63,7 +60,7 @@ class PrintController extends Controller
         $templateProcessor->setValue('ttd_name', $student->ttd_name);
 
         // save docx
-        $filename = 'formulir-ppdb-' . $student->full_name . '.docx';
+        $filename = $student->full_name . '.docx';
         $file_path = storage_path('/app/public/' . $filename);
         $templateProcessor->saveAs($file_path);
         

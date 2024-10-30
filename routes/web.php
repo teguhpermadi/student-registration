@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/{id}/print-preview', [PrintController::class, 'print_preview'])->name('print-preview');
+Route::get('/{id}/download', [PrintController::class, 'download'])->name('download');
