@@ -184,6 +184,7 @@ class StudentRegistration extends Page implements HasForms
                             ->required(),
                         FileUpload::make('photo')
                             ->openable()
+                            ->directory('photo')
                             ->image()
                             ->helperText('Pas foto 3x4')
                             ->required(),
@@ -309,22 +310,27 @@ class StudentRegistration extends Page implements HasForms
                     ->schema([
                         FileUpload::make('scan_akta_lahir')
                             ->openable()
+                            ->directory('akta_lahir')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
+                            ->directory('kartu_keluarga')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
                             ->openable()
+                            ->directory('ktp')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
+                            ->directory('ktp')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
+                            ->directory('nisn')
                             ->acceptedFileTypes(['application/pdf'])
                             ->required(),
 
