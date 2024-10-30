@@ -24,6 +24,8 @@ return new class extends Migration
             $table->date('birthday');
             $table->string('nisn');
             $table->string('nik');
+            $table->string('number_akta_lahir');
+            $table->string('number_kartu_keluarga');
             $table->text('address');
             $table->string('village');
             $table->string('district');

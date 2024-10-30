@@ -17,6 +17,8 @@ class Student extends Model
         'birthday',
         'nisn',
         'nik',
+        'number_akta_lahir',
+        'number_kartu_keluarga',
         'address',
         'village',
         'district',

@@ -26,6 +26,8 @@ class PrintController extends Controller
         $templateProcessor->setValue('birthday', $student->birthday);
         $templateProcessor->setValue('nisn', $student->nisn);
         $templateProcessor->setValue('nik', $student->nik);
+        $templateProcessor->setValue('number_akta_lahir', $student->number_akta_lahir);
+        $templateProcessor->setValue('number_kartu_keluarga', $student->number_kartu_keluarga);
         $templateProcessor->setValue('address', $student->address);
         $templateProcessor->setValue('village', $student->village);
         $templateProcessor->setValue('district', $student->district);

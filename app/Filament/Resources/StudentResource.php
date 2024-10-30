@@ -95,6 +95,14 @@ class StudentResource extends Resource
                             ->helperText('nomor induk kependudukan siswa')
                             ->translateLabel()
                             ->required(),
+                            TextInput::make('number_akta_lahir')
+                            ->helperText('nomor akta lahir')
+                            ->translateLabel()
+                            ->required(),
+                        TextInput::make('number_kartu_keluarga')
+                            ->helperText('nomor kartu keluarga')
+                            ->translateLabel()
+                            ->required(),
                         FileUpload::make('photo')
                             ->openable()
                             ->image()
