@@ -10,7 +10,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -48,6 +50,7 @@ class AcademicYearResource extends Resource
                 TextColumn::make('quota_regular'),
                 TextColumn::make('quota_inklusi'),
                 TextColumn::make('student_count')->counts('student'),
+                ToggleColumn::make('active')
             ])
             ->filters([
                 //

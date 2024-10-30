@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('year');
             $table->string('quota_regular');
             $table->string('quota_inklusi');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }
