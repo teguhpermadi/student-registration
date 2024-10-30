@@ -241,5 +241,6 @@
     "poscode": "Kode Pos",
     "previous_school": "Sekolah Asal",
     "date_received": "Tanggal Diterima",
-    "grade_received": "Tingkat yang Diterima"
+    "grade_received": "Tingkat yang Diterima",
+    "filament-autograph::filament-autograph.actions.done.label": "Gunakan"
 }
