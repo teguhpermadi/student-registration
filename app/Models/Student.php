@@ -67,6 +67,10 @@ class Student extends Model
     public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class);
+    }
 
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }
