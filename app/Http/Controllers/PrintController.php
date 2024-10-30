@@ -83,6 +83,7 @@ class PrintController extends Controller
         // Adding file: second parameter is what will the path inside of the archive
         // So it will create another folder called "storage/" inside ZIP, and put the file there.
         $zip->addFile(public_path('storage/'.$filename), $filename);
+        $zip->addFile(public_path('storage/'.$student->photo), $student->photo);
         $zip->addFile(public_path('storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
         $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
         $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
