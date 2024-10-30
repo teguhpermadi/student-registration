@@ -45,7 +45,19 @@ class ShieldSeeder extends Seeder
                                         "delete_student",
                                         "delete_any_student",
                                         "force_delete_student",
-                                        "force_delete_any_student"
+                                        "force_delete_any_student",
+                                        "view_user",
+                                        "view_any_user",
+                                        "create_user",
+                                        "update_user",
+                                        "restore_user",
+                                        "restore_any_user",
+                                        "replicate_user",
+                                        "reorder_user",
+                                        "delete_user",
+                                        "delete_any_user",
+                                        "force_delete_user",
+                                        "force_delete_any_user"
                                 ]},
                                 {
                                     "name":"student",
