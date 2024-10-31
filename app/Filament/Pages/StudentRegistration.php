@@ -48,7 +48,7 @@ use function PHPSTORM_META\map;
 class StudentRegistration extends Page implements HasForms
 {
     use InteractsWithForms;
-    
+
     use HasPageShield;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
@@ -88,15 +88,15 @@ class StudentRegistration extends Page implements HasForms
                 SimpleAlert::make('quota_regular')
                     ->title('Kuota Regular sudah terpenuhi')
                     ->border()
-                    ->visible(function(Get $get){
+                    ->visible(function (Get $get) {
                         // jika academic year id dipilih
                         if ($get('academic_year_id')) {
                             $academic = AcademicYear::find($get('academic_year_id'));
                             $studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
-                                        ->where('category', 'Regular')
-                                        ->count();
+                                ->where('category', 'Regular')
+                                ->count();
                             // periksa jumlah siswa dan quota
-                            if($studentRegular == $academic->quota_regular){
+                            if ($studentRegular == $academic->quota_regular) {
                                 return true;
                             } else {
                                 return false;
@@ -108,15 +108,15 @@ class StudentRegistration extends Page implements HasForms
                 SimpleAlert::make('quota_inklusi')
                     ->title('Kuota Inklusi sudah terpenuhi')
                     ->border()
-                    ->visible(function(Get $get){
+                    ->visible(function (Get $get) {
                         // jika academic year id dipilih
                         if ($get('academic_year_id')) {
                             $academic = AcademicYear::find($get('academic_year_id'));
                             $studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
-                                        ->where('category', 'Inklusi')
-                                        ->count();
+                                ->where('category', 'Inklusi')
+                                ->count();
                             // periksa jumlah siswa dan quota
-                            if($studentInklusi == $academic->quota_inklusi){
+                            if ($studentInklusi == $academic->quota_inklusi) {
                                 return true;
                             } else {
                                 return false;
@@ -369,7 +369,12 @@ class StudentRegistration extends Page implements HasForms
                                 SignaturePad::make('signature')
                                     ->label(__('ttd'))
                                     ->downloadable(false)
-                                    ->backgroundColor('white')
+                                    // ->backgroundColor('rgba(0,0,0,0)')  // Background color on light mode
+                                    // ->backgroundColorOnDark('#f0a')     // Background color on dark mode (defaults to backgroundColor)
+                                    ->exportBackgroundColor('#f00')     // Background color on export (defaults to backgroundColor)
+                                    ->penColor('#000')                  // Pen color on light mode
+                                    ->penColorOnDark('#fff')            // Pen color on dark mode (defaults to penColor)
+                                    // ->exportPenColor('#0f0')
                                     ->undoable()
                                     ->live()
                                     ->visible(fn($get) => empty($get('ttd')))
