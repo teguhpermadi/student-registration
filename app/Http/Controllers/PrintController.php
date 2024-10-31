@@ -72,7 +72,7 @@ class PrintController extends Controller
     {
         $student = Student::find($id);
         $filename = $student->full_name . '.docx';
-        $file_path = storage_path('app/public/storage/' . $filename);
+        $file_path = storage_path('app/public/' . $filename);
 
         $zip_file = $student->full_name . '.zip'; // Name of our archive to download
 
