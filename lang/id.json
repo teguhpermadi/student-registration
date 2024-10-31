@@ -285,5 +285,6 @@
     "student_count" : "Jumlah siswa",
     "active" : "Aktif",
     "proof_of_payment" : "Bukti pembayaran",
-    "payment" : "Pembayaran"
+    "payment" : "Pembayaran",
+    "filament-excel::actions.label" : "Excel"
 }
