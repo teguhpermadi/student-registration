@@ -56,7 +56,7 @@ class UserResource extends Resource
                 Action::make('reset')
                     ->color('danger')
                     ->action(function (User $record) {
-                        $record->update(['password' => Hash::make('password')]);
+                        $record->update(['password' => Hash::make('12345678')]);
 
                         Notification::make()
                             ->title('Reset password successfully')

@@ -12,7 +12,7 @@ class PrintController extends Controller
     public function download($id)
     {
         $student = Student::find($id);
-        $templateProcessor = new TemplateProcessor(storage_path('/template/template formulir.docx'));
+        $templateProcessor = new TemplateProcessor(asset('/template/template formulir.docx'));
 
         $templateProcessor->setValue('year', $student->academicYear->year);
         $templateProcessor->setValue('category', $student->category);
@@ -55,13 +55,13 @@ class PrintController extends Controller
         $templateProcessor->setValue('mother_phone', $student->mother_phone);
         $templateProcessor->setValue('updated_at', $student->updated_at->format('j F Y'));
 
-        $templateProcessor->setImageValue('photo', storage_path('/app/public/' . $student->photo));
-        $templateProcessor->setImageValue('ttd', storage_path('/app/public/' . $student->ttd));
+        $templateProcessor->setImageValue('photo', asset('/app/public/' . $student->photo));
+        $templateProcessor->setImageValue('ttd', asset('/app/public/' . $student->ttd));
         $templateProcessor->setValue('ttd_name', $student->ttd_name);
 
         // save docx
         $filename = $student->full_name . '.docx';
-        $file_path = storage_path('/app/public/' . $filename);
+        $file_path = asset('/app/public/' . $filename);
         $templateProcessor->saveAs($file_path);
 
         // return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
@@ -82,14 +82,14 @@ class PrintController extends Controller
 
         // Adding file: second parameter is what will the path inside of the archive
         // So it will create another folder called "storage/" inside ZIP, and put the file there.
-        $zip->addFile(public_path('storage/'.$filename), $filename);
-        $zip->addFile(public_path('storage/'.$student->photo), $student->photo);
-        $zip->addFile(public_path('storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
-        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
-        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
-        $zip->addFile(public_path('storage/'.$student->scan_ktp_ayah), $student->scan_ktp_ayah);
-        $zip->addFile(public_path('storage/'.$student->scan_ktp_ibu), $student->scan_ktp_ibu);
-        $zip->addFile(public_path('storage/'.$student->scan_nisn), $student->scan_nisn);
+        $zip->addFile(asset('storage/'.$filename), $filename);
+        $zip->addFile(asset('storage/'.$student->photo), $student->photo);
+        $zip->addFile(asset('storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
+        $zip->addFile(asset('storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
+        $zip->addFile(asset('storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
+        $zip->addFile(asset('storage/'.$student->scan_ktp_ayah), $student->scan_ktp_ayah);
+        $zip->addFile(asset('storage/'.$student->scan_ktp_ibu), $student->scan_ktp_ibu);
+        $zip->addFile(asset('storage/'.$student->scan_nisn), $student->scan_nisn);
 
         $zip->close();
 
