@@ -55,8 +55,8 @@ class PrintController extends Controller
         $templateProcessor->setValue('mother_phone', $student->mother_phone);
         $templateProcessor->setValue('updated_at', $student->updated_at->format('j F Y'));
 
-        $templateProcessor->setImageValue('photo', storage_path('/app/public/storage/' . $student->photo));
-        $templateProcessor->setImageValue('ttd', storage_path('/app/public/storage/' . $student->ttd));
+        $templateProcessor->setImageValue('photo', storage_path('/app/public/' . $student->photo));
+        $templateProcessor->setImageValue('ttd', storage_path('/app/public/' . $student->ttd));
         $templateProcessor->setValue('ttd_name', $student->ttd_name);
 
         // save docx
