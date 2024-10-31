@@ -55,13 +55,13 @@ class PrintController extends Controller
         $templateProcessor->setValue('mother_phone', $student->mother_phone);
         $templateProcessor->setValue('updated_at', $student->updated_at->format('j F Y'));
 
-        $templateProcessor->setImageValue('photo', asset('/app/public/' . $student->photo));
-        $templateProcessor->setImageValue('ttd', asset('/app/public/' . $student->ttd));
+        $templateProcessor->setImageValue('photo', storage_path('/app/public/storage/' . $student->photo));
+        $templateProcessor->setImageValue('ttd', storage_path('/app/public/storage/' . $student->ttd));
         $templateProcessor->setValue('ttd_name', $student->ttd_name);
 
         // save docx
         $filename = $student->full_name . '.docx';
-        $file_path = asset('/app/public/' . $filename);
+        $file_path = storage_path('/app/public/' . $filename);
         $templateProcessor->saveAs($file_path);
 
         // return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
@@ -72,7 +72,7 @@ class PrintController extends Controller
     {
         $student = Student::find($id);
         $filename = $student->full_name . '.docx';
-        $file_path = public_path('storage/' . $filename);
+        $file_path = storage_path('app/public/storage/' . $filename);
 
         $zip_file = $student->full_name . '.zip'; // Name of our archive to download
 
