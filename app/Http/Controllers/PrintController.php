@@ -12,7 +12,7 @@ class PrintController extends Controller
     public function download($id)
     {
         $student = Student::find($id);
-        $templateProcessor = new TemplateProcessor(public_path('/template/template formulir.docx'));
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/template/template formulir.docx'));
 
         $templateProcessor->setValue('year', $student->academicYear->year);
         $templateProcessor->setValue('category', $student->category);
@@ -82,14 +82,14 @@ class PrintController extends Controller
 
         // Adding file: second parameter is what will the path inside of the archive
         // So it will create another folder called "storage/" inside ZIP, and put the file there.
-        $zip->addFile(public_path('storage/'.$filename), $filename);
-        $zip->addFile(public_path('storage/'.$student->photo), $student->photo);
-        $zip->addFile(public_path('storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
-        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
-        $zip->addFile(public_path('storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
-        $zip->addFile(public_path('storage/'.$student->scan_ktp_ayah), $student->scan_ktp_ayah);
-        $zip->addFile(public_path('storage/'.$student->scan_ktp_ibu), $student->scan_ktp_ibu);
-        $zip->addFile(public_path('storage/'.$student->scan_nisn), $student->scan_nisn);
+        $zip->addFile(storage_path('/app/public/storage/'.$filename), $filename);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->photo), $student->photo);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_akta_lahir), $student->scan_akta_lahir);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_kartu_keluarga), $student->scan_akta_lahir);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_kartu_keluarga), $student->scan_kartu_keluarga);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_ktp_ayah), $student->scan_ktp_ayah);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_ktp_ibu), $student->scan_ktp_ibu);
+        $zip->addFile(storage_path('/app/public/storage/'.$student->scan_nisn), $student->scan_nisn);
 
         $zip->close();
 

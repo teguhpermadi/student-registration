@@ -130,7 +130,8 @@ class PaymentResource extends Resource
                 if (auth()->user()->hasRole('student')) {
                     return $query->where('user_id', auth()->id());
                 }
-            });
+            })
+            ->header(view('BankPayment'));
     }
 
     public static function getRelations(): array

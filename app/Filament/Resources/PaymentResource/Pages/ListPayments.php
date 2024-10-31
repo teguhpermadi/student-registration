@@ -18,9 +18,4 @@ class ListPayments extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-
-    public function getHeader(): ?View
-    {
-        return view('BankPayment');
-    }
 }
