@@ -205,6 +205,7 @@ class StudentRegistration extends Page implements HasForms
                             ->directory('photo')
                             ->image()
                             ->label(__('photo'))
+                            ->optimize('jpeg')
                             ->helperText('Pas foto 3x4')
                             ->required(),
                     ]),
