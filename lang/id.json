@@ -284,5 +284,6 @@
     "quota_inklusi" : "Kuota inklusi",
     "student_count" : "Jumlah siswa",
     "active" : "Aktif",
-    "proof_of_payment" : "Bukti pembayaran"
+    "proof_of_payment" : "Bukti pembayaran",
+    "payment" : "Pembayaran"
 }

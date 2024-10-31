@@ -33,6 +33,15 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('payment');
+    }
+
+    protected static ?string $title = 'Pembayaran';
+
+    protected static ?string $breadcrumb = 'Pembayaran';
+
     public static function form(Form $form): Form
     {
         return $form
