@@ -82,7 +82,19 @@ class StudentRegistration extends Page implements HasForms
         return $form
             ->schema([
                 SimpleAlert::make('instruction')
-                    ->title('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: Pas foto 3 x 4, Scan Akta Lahir, Scan Kartu Keluarga, Scan KTP Ayah, Scan KTP Ibu, Scan Kartu NISN')
+                    ->title('Info')
+                    // ->description('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> Pas foto 3 x 4, Scan Akta Lahir, Scan Kartu Keluarga, Scan KTP Ayah, Scan KTP Ibu, Scan Kartu NISN')
+                    ->description(fn() => new HtmlString('<p>
+                                    Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> 
+                                    <ol>
+                                        <li>1. Pas foto 3 x 4</li>
+                                        <li>2. Scan Akta Lahir</li>
+                                        <li>3. Scan Kartu Keluarga</li>
+                                        <li>4. Scan KTP Ayah</li>
+                                    <li>5. Scan KTP Ibu</li>
+                                    <li>6. Scan Kartu NISN</li>
+                                </ol>
+                            </p>'))
                     ->border()
                     ->info(),
                 SimpleAlert::make('quota_regular')
@@ -330,28 +342,33 @@ class StudentRegistration extends Page implements HasForms
                     ->schema([
                         FileUpload::make('scan_akta_lahir')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('akta_lahir')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('kartu_keluarga')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('ktp')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('ktp')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('nisn')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
                             ->required(),
 
                     ]),

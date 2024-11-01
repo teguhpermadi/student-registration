@@ -28,8 +28,8 @@ enum JobEnum: string implements HasLabel
             self::POLRI => 'POLRI',
             self::GURU => 'GURU',
             self::DOSEN => 'DOSEN',
-            self::PEGAWAI_NEGERI => 'PEGAWAI NEGER',
-            self::PEGAWAI_SWASTA => 'PEGAWAI SWAST',
+            self::PEGAWAI_NEGERI => 'PEGAWAI NEGERI',
+            self::PEGAWAI_SWASTA => 'PEGAWAI SWASTA',
             self::WIRASWASTA => 'WIRASWASTA',
             self::LAINNYA => 'LAINNYA',
         };

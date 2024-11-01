@@ -60,6 +60,7 @@ class PaymentResource extends Resource
                     ->required(),
                 FileUpload::make('proof')
                     ->openable()
+                    ->helperText('File berupa gambar')
                     ->directory('payment')
                     ->image()
                     ->label(__('proof_of_payment'))
