@@ -18,6 +18,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
@@ -52,10 +53,12 @@ class PaymentResource extends Resource
                     ->label('Total bayar')
                     ->prefix('Rp')
                     ->numeric()
+                    ->helperText('tulis berupa angka saja, tanpa tanda titik atau koma')
                     ->required(),
                 Select::make('for')
                     ->label('Jenis Pembayaran')
                     ->multiple()
+                    ->helperText('anda dapat memilih lebih dari satu')
                     ->options(PaymentEnum::class)
                     ->required(),
                 FileUpload::make('proof')
@@ -133,7 +136,16 @@ class PaymentResource extends Resource
                     return $query->where('user_id', auth()->id());
                 }
             })
-            ->header(view('BankPayment'));
+            ->header(view('BankPayment'))
+            ->emptyStateHeading('Belum melakukan pembayaran')
+            ->emptyStateDescription('Upload bukti pembayaran yang telah anda lakukan')
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Tambah pembayaran')
+                    ->url(route('filament.admin.resources.payments.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ]);
     }
 
     public static function getRelations(): array
