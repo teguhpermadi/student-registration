@@ -15,6 +15,7 @@ class Student extends Model
         'gender',
         'city_born',
         'birthday',
+        'hobby',
         'nisn',
         'nik',
         'number_akta_lahir',

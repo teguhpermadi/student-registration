@@ -104,6 +104,9 @@ class StudentResource extends Resource
                         DatePicker::make('birthday')
                             ->label(__('birthday'))
                             ->required(),
+                        TextInput::make('hobby')
+                            ->label(__('hobby'))
+                            ->required(),
                         TextInput::make('nisn')
                             ->label(__('nisn'))
                             ->numeric()
