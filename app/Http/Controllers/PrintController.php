@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Letter;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -98,5 +99,49 @@ class PrintController extends Controller
 
         // We return the file immediately after download
         return response()->download($zip_file)->deleteFileAfterSend(true);
+    }
+
+    public function letter($id)
+    {
+        $student = Student::find($id);
+
+        if($student->letter){ 
+            // jika siswa telah memiliki surat keterangan
+            $file_path = storage_path('app/public/letter/' . $student->letter->file);
+            return response()->download($file_path); // <<< HERE
+        } else {
+            // jika siswa belum memiliki surat keterangan
+            // buat suratnya
+            $templateProcessor = new TemplateProcessor(storage_path('app/public/template/template surat penerimaan.docx'));
+            
+            $reference_number = $student->id. '/PPDB/MIAR/' . $student->updated_at->year;
+            $templateProcessor->setValue('reference_number', $reference_number);
+            
+            $templateProcessor->setValue('year', $student->academicYear->year);
+            $templateProcessor->setValue('full_name', $student->full_name);
+            $templateProcessor->setValue('city_born', $student->city_born);
+            $templateProcessor->setValue('birthday', $student->birthday);
+            $templateProcessor->setValue('previous_school', $student->previous_school);
+            $templateProcessor->setValue('nisn', $student->nisn);
+            $templateProcessor->setValue('category', $student->category);
+            $templateProcessor->setValue('date', $student->updated_at->format('j F Y'));
+    
+            // save docx
+            $filename = 'suket ppdb '.' - '.$student->full_name . '.docx';
+            $file_path = storage_path('app/public/letter/' . $filename);
+            $templateProcessor->saveAs($file_path);
+    
+            // save to database
+            $letter = Letter::create([
+                'reference_number' => $reference_number,
+                'student_id' => $id,
+                'academic_year_id' => $student->academicYear->id,
+                'number_reference' => $reference_number,
+                'file' => $filename,
+            ]);
+    
+            // return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
+            return response()->download($file_path); // <<< HERE
+        }
     }
 }

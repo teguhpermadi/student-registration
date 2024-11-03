@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/{id}/download', [PrintController::class, 'download'])->name('download');
+Route::get('/{id}/letter', [PrintController::class, 'letter'])->name('letter');

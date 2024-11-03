@@ -14,6 +14,7 @@ use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\AcademicYear;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
@@ -383,6 +384,10 @@ class StudentResource extends Resource
                 ActionsAction::make('download')
                     ->url(fn(Student $record): string => route('download', $record))
                     ->openUrlInNewTab(),
+                ActionsAction::make('letter')
+                    ->url(fn(Student $record): string => route('letter', $record))
+                    ->openUrlInNewTab(),
+
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
