@@ -219,6 +219,7 @@ class StudentRegistration extends Page implements HasForms
                             ->openable()
                             ->directory('photo')
                             ->image()
+                            ->imageEditor()
                             ->label(__('photo'))
                             ->optimize('jpeg')
                             ->helperText('Pas foto 3x4')
@@ -348,23 +349,27 @@ class StudentRegistration extends Page implements HasForms
                             ->helperText('Format file gambar')
                             ->directory('akta_lahir')
                             ->image()
+                            ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('kartu_keluarga')
                             ->image()
+                            ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('ktp')
+                            ->imageEditor()
                             ->image()
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('ktp')
+                            ->imageEditor()
                             ->image()
                             ->required(),
                         FileUpload::make('scan_nisn')
@@ -372,6 +377,7 @@ class StudentRegistration extends Page implements HasForms
                             ->helperText('Format file gambar')
                             ->directory('nisn')
                             ->image()
+                            ->imageEditor()
                             ->required(),
 
                     ]),
