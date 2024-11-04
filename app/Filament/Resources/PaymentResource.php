@@ -98,6 +98,14 @@ class PaymentResource extends Resource
                             return true;
                         }
                     }),
+                TextColumn::make('user.student.previous_school')
+                    ->label(__('previous_school'))
+                    ->searchable()
+                    ->hidden(function(){
+                        if (auth()->user()->hasRole('student')) {
+                            return true;
+                        }
+                    }),
                 TextColumn::make('money')
                     ->label('Pembayaran')
                     ->money("IDR")
