@@ -387,7 +387,6 @@ class StudentResource extends Resource
                 ActionsAction::make('letter')
                     ->url(fn(Student $record): string => route('letter', $record))
                     ->openUrlInNewTab(),
-
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

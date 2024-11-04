@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->nullable()->constrained()->nullOnDelete();
             $table->string('file');
             $table->timestamps();
+
+            $table->unique(['reference_number']);
         });
     }
 
