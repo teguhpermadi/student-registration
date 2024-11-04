@@ -377,8 +377,7 @@ class StudentRegistration extends Page implements HasForms
                             ->helperText('Format file gambar')
                             ->directory('nisn')
                             ->image()
-                            ->imageEditor()
-                            ->required(),
+                            ->imageEditor(),
 
                     ]),
                 Section::make('Persetujuan')
