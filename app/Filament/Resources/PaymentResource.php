@@ -66,6 +66,7 @@ class PaymentResource extends Resource
                     ->helperText('File berupa gambar')
                     ->directory('payment')
                     ->image()
+                    ->imageEditor()
                     ->label(__('proof_of_payment'))
                     ->required(),
                 Section::make('verifikasi')
