@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\CategoryEnum;
 use App\ChildRelationEnum;
 use App\EducationEnum;
+use App\Filament\Exports\StudentExporter;
 use App\IncomeEnum;
 use App\JobEnum;
 use App\Models\Student;
@@ -34,6 +35,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action as ActionsAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -361,6 +363,7 @@ class StudentResource extends Resource
                     ->circular(),
                 TextColumn::make('full_name')
                     ->label(__('full_name'))
+                    ->wrap()
                     ->searchable(),
                 TextColumn::make('gender')
                     ->label(__('gender')),
@@ -395,7 +398,8 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
+                    // \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
+                    ExportBulkAction::make()->exporter(StudentExporter::class),
                 ]),
             ]);
     }
