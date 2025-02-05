@@ -368,6 +368,9 @@ class StudentResource extends Resource
                     ->label(__('category')),
                 TextColumn::make('previous_school')
                     ->label(__('previous_school')),
+                TextColumn::make('mother_phone')
+                    ->label(__('mother_phone'))
+                    ->copyable(),
                 TextColumn::make('updated_at')
                     ->label(__('updated_at')),
             ])
