@@ -14,6 +14,12 @@ class ListStudents extends ListRecords
     {
         return [
             // Actions\CreateAction::make(),
+            // create action to url student-registration
+            Actions\CreateAction::make()
+                ->url(fn () => url('admin/student-registration'))
+                ->label('Register New Student')
+                ->icon('heroicon-o-plus')
+                ->color('primary')
         ];
     }
 }

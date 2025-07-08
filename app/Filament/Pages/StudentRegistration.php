@@ -60,6 +60,9 @@ class StudentRegistration extends Page implements HasForms
         return __('student_registration');
     }
 
+    // hidden in navigation
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $title = 'Pendaftaran Siswa';
 
     public ?array $data = [];

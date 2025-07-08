@@ -55,9 +55,12 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    // order in navigation
+    protected static ?int $navigationSort = 1;
+
     public static function getNavigationLabel(): string
     {
-        return __('student');
+        return __('student_registration');
     }
 
     protected static ?string $title = 'Siswa';
@@ -387,12 +390,22 @@ class StudentResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                // custom action to download file
                 ActionsAction::make('download')
                     ->url(fn(Student $record): string => route('download', $record))
-                    ->openUrlInNewTab(),
+                    ->openUrlInNewTab()
+                    ->visible(
+                        // hanya tampilkan jika user role == admin
+                        auth()->user()->hasRole('admin') || auth()->user()->hasRole('superadmin')
+                    ),
                 ActionsAction::make('letter')
                     ->url(fn(Student $record): string => route('letter', $record))
-                    ->openUrlInNewTab(),
+                    ->openUrlInNewTab()
+                    ->visible(
+                        // hanya tampilkan jika user role == admin
+                        auth()->user()->hasRole('admin') || auth()->user()->hasRole('superadmin')
+                    ),
                 // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -401,7 +414,13 @@ class StudentResource extends Resource
                     // \pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction::make(),
                     ExportBulkAction::make()->exporter(StudentExporter::class),
                 ]),
-            ]);
+            ])
+            ->modifyqueryusing(function (Builder $query) {
+                // jika user role == student, maka hanya tampilkan data siswa yang sesuai dengan user yang login
+                if (auth()->user()->hasRole('student')) {
+                    $query->where('user_id', auth()->user()->id);
+                }
+            });
     }
 
     public static function getRelations(): array

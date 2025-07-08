@@ -39,6 +39,8 @@ class PaymentResource extends Resource
         return __('payment');
     }
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $title = 'Pembayaran';
 
     protected static ?string $breadcrumb = 'Pembayaran';
