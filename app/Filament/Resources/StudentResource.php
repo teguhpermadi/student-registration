@@ -43,6 +43,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\HtmlString;
@@ -408,32 +409,31 @@ class StudentResource extends Resource
                                 FileUpload::make('ttd')
                                     ->label(__('ttd'))
                                     ->downloadable()
-                                    ->disabled()
                                     ->dehydrated()
                                     ->directory('signature')
                                     ->required()
-                                    ->hintAction(
-                                        Action::make('Delete')
-                                            ->icon('heroicon-m-trash')
-                                            // ->visible(fn($state) => filled($this->user['ttd']) || $state)
-                                            ->visible(fn($state) => filled($this->user) || $state)
-                                            ->requiresConfirmation()
-                                            ->action(function ($state, $set) {
-                                                if (!empty($this->user['ttd'] ?? null)) {
-                                                    Storage::disk('public')->delete($this->user['ttd']);
-                                                    $this->user['ttd'] = null;
-                                                    $this->user->save();
+                                    // ->hintAction(
+                                    //     Action::make('Delete')
+                                    //         ->icon('heroicon-m-trash')
+                                    //         // ->visible(fn($state) => filled($this->user['ttd']) || $state)
+                                    //         // ->visible(fn($state) => filled($this->user) || $state)
+                                    //         ->requiresConfirmation()
+                                    //         ->action(function ($state, $set) {
+                                    //             if (!empty($this->user['ttd'] ?? null)) {
+                                    //                 Storage::disk('public')->delete($this->user['ttd']);
+                                    //                 $this->user['ttd'] = null;
+                                    //                 $this->user->save();
 
-                                                    return redirect(request()->header('Referer'));
-                                                } else {
-                                                    $file = reset($state);
-                                                    if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                                                        Storage::delete($file->getPathName());
-                                                        $set('ttd', null);
-                                                    }
-                                                }
-                                            })
-                                    )
+                                    //                 return redirect(request()->header('Referer'));
+                                    //             } else {
+                                    //                 $file = reset($state);
+                                    //                 if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                                    //                     Storage::delete($file->getPathName());
+                                    //                     $set('ttd', null);
+                                    //                 }
+                                    //             }
+                                    //         })
+                                    // )
                                     ->extraAlpineAttributes([
                                         'x-on:test.window' => '
                                                 const pond = FilePond.find($el.querySelector(".filepond--root"));
@@ -529,5 +529,26 @@ class StudentResource extends Resource
             'view' => Pages\ViewStudent::route('/{record}'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    public static function createTemporaryFileUploadFromUrl($favicon, $filename): string
+    {
+        // Step 1: Save the file to a temporary location
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'upload');
+        file_put_contents($tempFilePath, $favicon);
+
+        // Step 2: Create a UploadedFile instance
+        $mimeType = mime_content_type($tempFilePath);
+        $tempFile = new UploadedFile($tempFilePath, basename($filename), $mimeType);
+        $path = Storage::put('livewire-tmp', $tempFile);
+
+        // Step 3: Create a TemporaryUploadedFile instance
+        $file = TemporaryUploadedFile::createFromLivewire($path);
+
+        return URL::temporarySignedRoute(
+            'livewire.preview-file',
+            now()->addMinutes(30)->endOfHour(),
+            ['filename' => $file->getFilename()]
+        );
     }
 }

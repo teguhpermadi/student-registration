@@ -287,5 +287,7 @@
     "active" : "Aktif",
     "proof_of_payment" : "Bukti pembayaran",
     "filament-excel::actions.label" : "Excel",
-    "payment" : "Pembayaran"
+    "payment" : "Pembayaran",
+    "filament-autograph::filament-autograph.actions.clear.label": "Hapus",
+    "filament-autograph::filament-autograph.actions.undo.label": "Batalkan"
 }
