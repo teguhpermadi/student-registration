@@ -14,6 +14,7 @@ use App\ReligionEnum;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\AcademicYear;
+use CodeWithDennis\SimpleAlert\Components\Forms\SimpleAlert;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
@@ -71,6 +72,62 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
+                SimpleAlert::make('instruction')
+                    ->title('Info')
+                    // ->description('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> Pas foto 3 x 4, Scan Akta Lahir, Scan Kartu Keluarga, Scan KTP Ayah, Scan KTP Ibu, Scan Kartu NISN')
+                    ->description(fn() => new HtmlString('<p>
+                                    Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> 
+                                    <ol>
+                                        <li>1. Pas foto 3 x 4</li>
+                                        <li>2. Scan Akta Lahir</li>
+                                        <li>3. Scan Kartu Keluarga</li>
+                                        <li>4. Scan KTP Ayah</li>
+                                    <li>5. Scan KTP Ibu</li>
+                                    <li>6. Scan Kartu NISN</li>
+                                </ol>
+                            </p>'))
+                    ->border()
+                    ->info(),
+                SimpleAlert::make('quota_regular')
+                    ->title('Kuota Regular sudah terpenuhi')
+                    ->border()
+                    ->visible(function (Get $get) {
+                        // jika academic year id dipilih
+                        if ($get('academic_year_id')) {
+                            $academic = AcademicYear::find($get('academic_year_id'));
+                            $studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+                                ->where('category', 'Regular')
+                                ->count();
+                            // periksa jumlah siswa dan quota
+                            if ($studentRegular == $academic->quota_regular) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    })
+                    ->reactive()
+                    ->warning(),
+                SimpleAlert::make('quota_inklusi')
+                    ->title('Kuota Inklusi sudah terpenuhi')
+                    ->border()
+                    ->visible(function (Get $get) {
+                        // jika academic year id dipilih
+                        if ($get('academic_year_id')) {
+                            $academic = AcademicYear::find($get('academic_year_id'));
+                            $studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+                                ->where('category', 'Inklusi')
+                                ->count();
+                            // periksa jumlah siswa dan quota
+                            if ($studentInklusi == $academic->quota_inklusi) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    })
+                    ->reactive()
+                    ->warning(),
                 Hidden::make('user_id')
                     ->default(auth()->user()->id),
                 Section::make('Formulir PPDB')
@@ -82,10 +139,28 @@ class StudentResource extends Resource
                             ->reactive()
                             ->required(),
                         Select::make('category')
-                            ->options([
-                                'Regular' => 'Regular',
-                                'Inklusi' => 'Inklusi',
-                            ])
+                            ->options(function (Get $get) {
+                                $option = [];
+                                if ($get('academic_year_id')) {
+                                    $academic = AcademicYear::find($get('academic_year_id'));
+                                    $studentRegular = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Regular')
+                                        ->count();
+                                    $studentInklusi = Student::where('academic_year_id', $get('academic_year_id'))
+                                        ->where('category', 'Inklusi')
+                                        ->count();
+
+                                    if ($studentRegular < $academic->quota_regular) {
+                                        $option['Regular'] = 'Regular';
+                                    }
+
+                                    if ($studentInklusi < $academic->quota_inklusi) {
+                                        $option['Inklusi'] = 'Inklusi';
+                                    }
+                                }
+
+                                return $option;
+                            })
                             ->label(__('category'))
                             ->reactive()
                             ->required(),
@@ -135,7 +210,9 @@ class StudentResource extends Resource
                             ->openable()
                             ->directory('photo')
                             ->image()
+                            ->imageEditor()
                             ->label(__('photo'))
+                            ->optimize('jpeg')
                             ->helperText('Pas foto 3x4')
                             ->required(),
                     ]),
@@ -260,29 +337,38 @@ class StudentResource extends Resource
                     ->schema([
                         FileUpload::make('scan_akta_lahir')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('akta_lahir')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
+                            ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('kartu_keluarga')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->image()
+                            ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('ktp')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->imageEditor()
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('ktp')
-                            ->acceptedFileTypes(['application/pdf'])
+                            ->imageEditor()
+                            ->image()
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
+                            ->helperText('Format file gambar')
                             ->directory('nisn')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->required(),
+                            ->image()
+                            ->imageEditor(),
 
                     ]),
                 Section::make('Persetujuan')
@@ -300,7 +386,12 @@ class StudentResource extends Resource
                                 SignaturePad::make('signature')
                                     ->label(__('ttd'))
                                     ->downloadable(false)
-                                    ->backgroundColor('white')
+                                    // ->backgroundColor('rgba(0,0,0,0)')  // Background color on light mode
+                                    // ->backgroundColorOnDark('#f0a')     // Background color on dark mode (defaults to backgroundColor)
+                                    ->exportBackgroundColor('#f00')     // Background color on export (defaults to backgroundColor)
+                                    ->penColor('#000')                  // Pen color on light mode
+                                    ->penColorOnDark('#fff')            // Pen color on dark mode (defaults to penColor)
+                                    // ->exportPenColor('#0f0')
                                     ->undoable()
                                     ->live()
                                     ->visible(fn($get) => empty($get('ttd')))
@@ -321,36 +412,36 @@ class StudentResource extends Resource
                                     ->dehydrated()
                                     ->directory('signature')
                                     ->required()
-                                    // ->hintAction(
-                                    //     Action::make('Delete')
-                                    //         ->icon('heroicon-m-trash')
-                                    //         // ->visible(fn($state) => filled($this->user['ttd']) || $state)
-                                    //         ->visible(fn($state) => filled($this->user) || $state)
-                                    //         ->requiresConfirmation()
-                                    //         ->action(function ($state, $set) {
-                                    //             if (!empty($this->user['ttd'] ?? null)) {
-                                    //                 Storage::disk('public')->delete($this->user['ttd']);
-                                    //                 $this->user['ttd'] = null;
-                                    //                 $this->user->save();
+                                    ->hintAction(
+                                        Action::make('Delete')
+                                            ->icon('heroicon-m-trash')
+                                            // ->visible(fn($state) => filled($this->user['ttd']) || $state)
+                                            ->visible(fn($state) => filled($this->user) || $state)
+                                            ->requiresConfirmation()
+                                            ->action(function ($state, $set) {
+                                                if (!empty($this->user['ttd'] ?? null)) {
+                                                    Storage::disk('public')->delete($this->user['ttd']);
+                                                    $this->user['ttd'] = null;
+                                                    $this->user->save();
 
-                                    //                 return redirect(request()->header('Referer'));
-                                    //             } else {
-                                    //                 $file = reset($state);
-                                    //                 if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                                    //                     Storage::delete($file->getPathName());
-                                    //                     $set('ttd', null);
-                                    //                 }
-                                    //             }
-                                    //         })
-                                    // )
-                                    // ->extraAlpineAttributes([
-                                    //     'x-on:test.window' => '
-                                    //             const pond = FilePond.find($el.querySelector(".filepond--root"));
-                                    //             setTimeout(() => {
-                                    //                 pond.removeFiles({ revert: false });
-                                    //                 pond.addFile($event.detail);
-                                    //             }, 750);',
-                                    // ])
+                                                    return redirect(request()->header('Referer'));
+                                                } else {
+                                                    $file = reset($state);
+                                                    if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                                                        Storage::delete($file->getPathName());
+                                                        $set('ttd', null);
+                                                    }
+                                                }
+                                            })
+                                    )
+                                    ->extraAlpineAttributes([
+                                        'x-on:test.window' => '
+                                                const pond = FilePond.find($el.querySelector(".filepond--root"));
+                                                setTimeout(() => {
+                                                    pond.removeFiles({ revert: false });
+                                                    pond.addFile($event.detail);
+                                                }, 750);',
+                                    ])
                                     ->image(),
                             ]),
                     ]),

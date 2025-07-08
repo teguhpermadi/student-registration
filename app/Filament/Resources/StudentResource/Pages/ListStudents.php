@@ -13,13 +13,13 @@ class ListStudents extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            // Actions\CreateAction::make(),
+            Actions\CreateAction::make(),
             // create action to url student-registration
-            Actions\CreateAction::make()
-                ->url(fn () => url('admin/student-registration'))
-                ->label('Register New Student')
-                ->icon('heroicon-o-plus')
-                ->color('primary')
+            // Actions\CreateAction::make()
+            //     ->url(fn () => url('admin/student-registration'))
+            //     ->label('Register New Student')
+            //     ->icon('heroicon-o-plus')
+            //     ->color('primary')
         ];
     }
 }
