@@ -64,12 +64,19 @@ class AdminPanelProvider extends PanelProvider
                 GreeterPlugin::make()
                     ->message('Selamat Datang,')
                     // ->name('Daenerys Targaryen')
-                    ->title('Tonton video berikut ini untuk melihat tutorial pengisian formulir PPDB MI AR RIDLO')
-                    ->action(
-                        Action::make('Youtube')
-                            ->openUrlInNewTab()
-                            ->url('https://youtube.com')
-                    )
+                    ->title('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki:
+                        (1) Pas foto 3 x 4;
+                        (2) Scan Akta Lahir;
+                        (3) Scan Kartu Keluarga;
+                        (4) Scan KTP Ayah;
+                        (5) Scan KTP Ibu;
+                        (6) Scan Kartu NISN.')
+                    
+                    // ->action(
+                    //     Action::make('Formulir')
+                    //         ->url(route('filament.admin.pages.student-registration'))
+                    //         ->icon('heroicon-m-plus')
+                    // )
                     ->columnSpan('full'),
             ])
             ->authMiddleware([
