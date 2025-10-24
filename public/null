@@ -1,22 +1,4 @@
-Student::find(2)
-Student::find(2)->birthday
-Student::find(2)->birthday->format('d m y')
-Student::find(2)->birthday->format('j F, Y')
-Student::find(2)->birthday->format('j F, Y')
-Student::find(2)->birthday->format('j F, Y')
-Student::find(2)->birthday->format('j F, Y')
-Student::find(2)->birthday->format('j F, Y')
-Student::find(2)->birthday->format('j F, Y')
-$t = Student::find(2)->birthday;
-\Carbon\Carbon::parse($t)->format('j F, Y')
-$t = Student::find(2)->birthday;
-\Carbon\Carbon::parse($t)->format('j F, Y')
-$t = Student::find(2)->birthday;
-\Carbon\Carbon::parse($t)->format('j F Y')
-\App\Model\Letter::all()
-\App\Models\Letter::all()
-\App\Models\Letter::all()
-\App\Models\Letter::all()
-\App\Models\Letter::all()
-\App\Models\Letter::first()
-\App\Models\Letter::get()
+AcademicYear::active()->get()
+AcademicYear::active()->first();
+AcademicYear::active()->with('student')->first();
+AcademicYear::active()->with('student')->first();

@@ -17,4 +17,9 @@ class AcademicYear extends Model
     {
         return $this->hasMany(Student::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
+    }
 }

@@ -11,11 +11,11 @@ class StudentWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $academic = AcademicYear::find(1);
-        $regular = Student::where('academic_year_id', 1)
+        $academic = AcademicYear::active()->first();
+        $regular = Student::where('academic_year_id', $academic->id)
             ->where('category', 'Regular')
             ->count();
-        $inklusi = Student::where('academic_year_id', 1)
+        $inklusi = Student::where('academic_year_id', $academic->id)
             ->where('category', 'Inklusi')
             ->count();
 
