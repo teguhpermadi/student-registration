@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -57,7 +58,8 @@ class Student extends Model
         'scan_nisn',
         'photo',
         'ttd_name',
-        'ttd'
+        'ttd',
+        'is_resign',
     ];
 
     public function user()
@@ -75,4 +77,8 @@ class Student extends Model
         return $this->hasOne(Letter::class);
     }
 
+    public function scopeNotResign($query)
+    {
+        return $query->where('is_resign', false);
+    }
 }

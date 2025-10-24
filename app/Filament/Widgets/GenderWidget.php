@@ -12,8 +12,8 @@ class GenderWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Laki-laki', Student::where('gender', 'male')->where('academic_year_id', AcademicYear::active()->first()->id)->count()),
-            Stat::make('Perempuan', Student::where('gender', 'female')->where('academic_year_id', AcademicYear::active()->first()->id)->count()),
+            Stat::make('Laki-laki', Student::notResign()->where('gender', 'male')->where('academic_year_id', AcademicYear::active()->first()->id)->count()),
+            Stat::make('Perempuan', Student::notResign()->where('gender', 'female')->where('academic_year_id', AcademicYear::active()->first()->id)->count()),
         ];
     }
 }

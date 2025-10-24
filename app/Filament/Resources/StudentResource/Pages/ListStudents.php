@@ -5,6 +5,8 @@ namespace App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Components\Tab;
 
 class ListStudents extends ListRecords
 {
@@ -14,12 +16,17 @@ class ListStudents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            // create action to url student-registration
-            // Actions\CreateAction::make()
-            //     ->url(fn () => url('admin/student-registration'))
-            //     ->label('Register New Student')
-            //     ->icon('heroicon-o-plus')
-            //     ->color('primary')
+        ];
+    }
+
+    // tabs
+    public function getTabs(): array
+    {
+        return [
+            'not_resign' => Tab::make('Aktif')
+                ->query(fn (Builder $query) => $query->where('is_resign', false)),
+            'resign' => Tab::make('Mengundurkan Diri')
+                ->query(fn (Builder $query) => $query->where('is_resign', true)),
         ];
     }
 }

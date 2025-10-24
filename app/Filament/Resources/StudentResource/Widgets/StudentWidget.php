@@ -14,9 +14,11 @@ class StudentWidget extends BaseWidget
         $academic = AcademicYear::active()->first();
         $regular = Student::where('academic_year_id', $academic->id)
             ->where('category', 'Regular')
+            ->where('is_resign', false)
             ->count();
         $inklusi = Student::where('academic_year_id', $academic->id)
             ->where('category', 'Inklusi')
+            ->where('is_resign', false)
             ->count();
 
         if($academic){
