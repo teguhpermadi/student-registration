@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Auth\CustomRegister;
 use App\Filament\Resources\StudentResource\Widgets\StudentWidget;
 use App\Filament\Widgets\GenderWidget;
+use App\Filament\Widgets\StudentRegistrationChart;
 use Filament\Actions\Action;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -47,6 +48,7 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\FilamentInfoWidget::class,
                 StudentWidget::class,
                 GenderWidget::class,
+                StudentRegistrationChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
