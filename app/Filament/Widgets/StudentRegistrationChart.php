@@ -7,6 +7,7 @@ use App\Models\AcademicYear;
 use Carbon\Carbon;
 use Filament\Widgets\BarChartWidget;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StudentRegistrationChart extends BarChartWidget
 {
@@ -53,6 +54,9 @@ class StudentRegistrationChart extends BarChartWidget
 
     protected function getRegistrationData(): array
     {
+        // Debug: Log the start of the function
+        Log::info('getRegistrationData called with filter: ' . ($this->filter ?? 'day'));
+        
         $filter = $this->filter ?? 'day';
         $now = now();
         $data = [];
@@ -69,33 +73,58 @@ class StudentRegistrationChart extends BarChartWidget
                 $years = explode('/', $academicYear->year);
                 $startYear = $years[0];
                 
-                for ($month = 1; $month <= 12; $month++) {
-                    $monthName = Carbon::createFromDate($startYear, $month, 1)->locale('id')->monthName;
+                // Get the academic year start and end dates
+                $academicStart = Carbon::parse($academicYear->start_date);
+                $academicEnd = Carbon::parse($academicYear->end_date);
+                
+                // Generate monthly intervals between academic start and end dates
+                $current = $academicStart->copy()->startOfMonth();
+                
+                while ($current <= $academicEnd) {
+                    $monthName = $current->locale('id')->monthName . ' ' . $current->year;
                     $labels[] = $monthName;
                     
-                    $startDate = Carbon::createFromDate($startYear, $month, 1)->startOfMonth();
-                    $endDate = Carbon::createFromDate($startYear, $month, 1)->endOfMonth();
+                    $startDate = $current->copy()->startOfMonth();
+                    $endDate = $current->copy()->endOfMonth();
                     
-                    if ($month >= 7) { // If second semester (July-December), use first year
-                        $startDate = Carbon::createFromDate($startYear, $month, 1)->startOfMonth();
-                        $endDate = Carbon::createFromDate($startYear, $month, 1)->endOfMonth();
-                    } else { // If first semester (January-June), use second year
-                        $startDate = Carbon::createFromDate($startYear + 1, $month, 1)->startOfMonth();
-                        $endDate = Carbon::createFromDate($startYear + 1, $month, 1)->endOfMonth();
+                    // Adjust end date if it's beyond the academic year end
+                    if ($endDate > $academicEnd) {
+                        $endDate = $academicEnd->copy()->endOfDay();
                     }
                     
-                    // Convert dates to start and end of day in application timezone
-                    $startOfDay = $startDate->copy()->startOfDay()->timezone(config('app.timezone'));
-                    $endOfDay = $endDate->copy()->endOfDay()->timezone(config('app.timezone'));
+                    // Debug: Log the academic year and month being processed
+                    Log::info("Processing academic year ID: $academicYearId, Month: $monthName ($startYear)");
                     
-                    // Query using whereDate with proper timezone handling
-                    $count = Student::notResign()
+                    // Set the date range for the query with proper timezone handling
+                    $startOfDay = Carbon::parse($startDate)->startOfDay()->setTimezone('UTC');
+                    $endOfDay = Carbon::parse($endDate)->endOfDay()->setTimezone('UTC');
+                    
+                    // Debug: Log the date range being queried
+                    Log::info("Date range: {$startDate->toDateString()} to {$endDate->toDateString()} (UTC: {$startOfDay->toDateTimeString()} to {$endOfDay->toDateTimeString()})");
+                    
+                    // Get the raw SQL query for debugging
+                    $query = Student::query()
                         ->where('academic_year_id', $academicYearId)
-                        ->whereDate('created_at', '>=', $startOfDay->toDateString())
-                        ->whereDate('created_at', '<=', $endOfDay->toDateString())
-                        ->count();
+                        ->where('is_resign', false)
+                        ->whereDate('created_at', '>=', $startDate->toDateString())
+                        ->whereDate('created_at', '<=', $endDate->toDateString());
+                        
+                    // Debug: Log the raw SQL query
+                    Log::info('SQL Query: ' . $query->toSql());
+                    Log::info('Bindings: ' . json_encode($query->getBindings()));
+                    
+                    $count = $query->count();
+                    
+                    // Debug: Log the count result
+                    Log::info("Found $count students for $monthName");
                     
                     $counts[$monthName] = $count;
+                    
+                    // Move to next month
+                    $current->addMonth();
+                    
+                    // Debug: Log the current month being processed
+                    Log::info("Processed month: $monthName ($startDate to $endDate) - Found $count students");
                 }
             } else {
                 // Fallback to current month if academic year not found
@@ -116,9 +145,9 @@ class StudentRegistrationChart extends BarChartWidget
                         $startOfDay = $date->copy()->startOfDay()->timezone(config('app.timezone'));
                         $endOfDay = $date->copy()->endOfDay()->timezone(config('app.timezone'));
                         
-                        $counts[$formattedDate] = Student::notResign()
-                            ->where('created_at', '>=', $startOfDay)
-                            ->where('created_at', '<=', $endOfDay)
+                        $counts[$formattedDate] = Student::query()
+                            ->where('is_resign', false)
+                            ->whereDate('created_at', $date->toDateString())
                             ->count();
                     }
                     break;
@@ -134,9 +163,9 @@ class StudentRegistrationChart extends BarChartWidget
                         $startOfDay = $date->copy()->startOfDay()->timezone(config('app.timezone'));
                         $endOfDay = $date->copy()->endOfDay()->timezone(config('app.timezone'));
                         
-                        $counts[$formattedDate] = Student::notResign()
-                            ->where('created_at', '>=', $startOfDay)
-                            ->where('created_at', '<=', $endOfDay)
+                        $counts[$formattedDate] = Student::query()
+                            ->where('is_resign', false)
+                            ->whereDate('created_at', $date->toDateString())
                             ->count();
                     }
                     break;
@@ -153,9 +182,10 @@ class StudentRegistrationChart extends BarChartWidget
                         $hourStartTz = $hourStart->copy()->timezone(config('app.timezone'));
                         $hourEndTz = $hourEnd->copy()->timezone(config('app.timezone'));
                         
-                        $count = Student::notResign()
-                            ->where('created_at', '>=', $hourStartTz)
-                            ->where('created_at', '<', $hourEndTz)
+                        $count = Student::query()
+                            ->where('is_resign', false)
+                            ->where('created_at', '>=', $hourStartTz->toDateTimeString())
+                            ->where('created_at', '<', $hourEndTz->toDateTimeString())
                             ->count();
                         $labels[] = $hourLabel;
                         $counts[$hourLabel] = $count;
