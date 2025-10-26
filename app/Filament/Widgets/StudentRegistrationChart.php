@@ -84,9 +84,15 @@ class StudentRegistrationChart extends BarChartWidget
                         $endDate = Carbon::createFromDate($startYear + 1, $month, 1)->endOfMonth();
                     }
                     
+                    // Convert dates to start and end of day in application timezone
+                    $startOfDay = $startDate->copy()->startOfDay()->timezone(config('app.timezone'));
+                    $endOfDay = $endDate->copy()->endOfDay()->timezone(config('app.timezone'));
+                    
+                    // Query using whereDate with proper timezone handling
                     $count = Student::notResign()
                         ->where('academic_year_id', $academicYearId)
-                        ->whereBetween('created_at', [$startDate, $endDate])
+                        ->whereDate('created_at', '>=', $startOfDay->toDateString())
+                        ->whereDate('created_at', '<=', $endOfDay->toDateString())
                         ->count();
                     
                     $counts[$monthName] = $count;
@@ -107,8 +113,12 @@ class StudentRegistrationChart extends BarChartWidget
                     foreach ($dateRange as $date) {
                         $formattedDate = $date->format('D, d M');
                         $labels[] = $formattedDate;
+                        $startOfDay = $date->copy()->startOfDay()->timezone(config('app.timezone'));
+                        $endOfDay = $date->copy()->endOfDay()->timezone(config('app.timezone'));
+                        
                         $counts[$formattedDate] = Student::notResign()
-                            ->whereDate('created_at', $date->format('Y-m-d'))
+                            ->where('created_at', '>=', $startOfDay)
+                            ->where('created_at', '<=', $endOfDay)
                             ->count();
                     }
                     break;
@@ -121,8 +131,12 @@ class StudentRegistrationChart extends BarChartWidget
                     foreach ($dateRange as $date) {
                         $formattedDate = $date->format('d M');
                         $labels[] = $formattedDate;
+                        $startOfDay = $date->copy()->startOfDay()->timezone(config('app.timezone'));
+                        $endOfDay = $date->copy()->endOfDay()->timezone(config('app.timezone'));
+                        
                         $counts[$formattedDate] = Student::notResign()
-                            ->whereDate('created_at', $date->format('Y-m-d'))
+                            ->where('created_at', '>=', $startOfDay)
+                            ->where('created_at', '<=', $endOfDay)
                             ->count();
                     }
                     break;
@@ -136,8 +150,12 @@ class StudentRegistrationChart extends BarChartWidget
                         $hourEnd = $startDate->copy()->addHours($hour + 1);
                         $hourLabel = $hourStart->format('H:00');
                         
+                        $hourStartTz = $hourStart->copy()->timezone(config('app.timezone'));
+                        $hourEndTz = $hourEnd->copy()->timezone(config('app.timezone'));
+                        
                         $count = Student::notResign()
-                            ->whereBetween('created_at', [$hourStart, $hourEnd])
+                            ->where('created_at', '>=', $hourStartTz)
+                            ->where('created_at', '<', $hourEndTz)
                             ->count();
                         $labels[] = $hourLabel;
                         $counts[$hourLabel] = $count;
