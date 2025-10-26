@@ -40,6 +40,17 @@ class AcademicYearResource extends Resource
                     ->mask('9999/9999')
                     ->label(__('year'))
                     ->required(),
+                Forms\Components\DatePicker::make('start_date')
+                    ->label(__('Start Date'))
+                    ->required()
+                    ->native(false)
+                    ->displayFormat('d/m/Y'),
+                Forms\Components\DatePicker::make('end_date')
+                    ->label(__('End Date'))
+                    ->required()
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
+                    ->afterOrEqual('start_date'),
                 TextInput::make('quota_regular')
                     ->label(__('quota_regular'))
                     ->numeric()
@@ -57,6 +68,12 @@ class AcademicYearResource extends Resource
             ->columns([
                 TextColumn::make('year')
                     ->label(__('year')),
+                TextColumn::make('start_date')
+                    ->label(__('Start Date'))
+                    ->date('d/m/Y'),
+                TextColumn::make('end_date')
+                    ->label(__('End Date'))
+                    ->date('d/m/Y'),
                 TextColumn::make('quota_regular')
                     ->label(__('quota_regular')),
                 TextColumn::make('quota_inklusi')
