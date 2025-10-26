@@ -84,7 +84,8 @@ class StudentRegistrationChart extends BarChartWidget
                         $endDate = Carbon::createFromDate($startYear + 1, $month, 1)->endOfMonth();
                     }
                     
-                    $count = Student::where('academic_year_id', $academicYearId)
+                    $count = Student::notResign()
+                        ->where('academic_year_id', $academicYearId)
                         ->whereBetween('created_at', [$startDate, $endDate])
                         ->count();
                     
@@ -106,7 +107,9 @@ class StudentRegistrationChart extends BarChartWidget
                     foreach ($dateRange as $date) {
                         $formattedDate = $date->format('D, d M');
                         $labels[] = $formattedDate;
-                        $counts[$formattedDate] = Student::whereDate('created_at', $date->format('Y-m-d'))->count();
+                        $counts[$formattedDate] = Student::notResign()
+                            ->whereDate('created_at', $date->format('Y-m-d'))
+                            ->count();
                     }
                     break;
 
@@ -118,7 +121,9 @@ class StudentRegistrationChart extends BarChartWidget
                     foreach ($dateRange as $date) {
                         $formattedDate = $date->format('d M');
                         $labels[] = $formattedDate;
-                        $counts[$formattedDate] = Student::whereDate('created_at', $date->format('Y-m-d'))->count();
+                        $counts[$formattedDate] = Student::notResign()
+                            ->whereDate('created_at', $date->format('Y-m-d'))
+                            ->count();
                     }
                     break;
 
@@ -131,7 +136,9 @@ class StudentRegistrationChart extends BarChartWidget
                         $hourEnd = $startDate->copy()->addHours($hour + 1);
                         $hourLabel = $hourStart->format('H:00');
                         
-                        $count = Student::whereBetween('created_at', [$hourStart, $hourEnd])->count();
+                        $count = Student::notResign()
+                            ->whereBetween('created_at', [$hourStart, $hourEnd])
+                            ->count();
                         $labels[] = $hourLabel;
                         $counts[$hourLabel] = $count;
                     }
