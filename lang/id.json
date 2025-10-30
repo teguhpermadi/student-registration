@@ -289,5 +289,7 @@
     "filament-excel::actions.label" : "Excel",
     "payment" : "Pembayaran",
     "filament-autograph::filament-autograph.actions.clear.label": "Hapus",
-    "filament-autograph::filament-autograph.actions.undo.label": "Batalkan"
+    "filament-autograph::filament-autograph.actions.undo.label": "Batalkan",
+    "father_status" : "Status Ayah",
+    "mother_status" : "Status Ibu"
 }

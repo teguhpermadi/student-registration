@@ -14,6 +14,7 @@ use App\ReligionEnum;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\AcademicYear;
+use App\ParentStatusEnum;
 use CodeWithDennis\SimpleAlert\Components\Forms\SimpleAlert;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
@@ -131,7 +132,7 @@ class StudentResource extends Resource
                     ->warning(),
                 Hidden::make('user_id')
                     ->default(auth()->user()->id),
-                Section::make('Formulir PPDB')
+                Section::make('Formulir Siswa Baru')
                     ->columns(2)
                     ->schema([
                         Select::make('academic_year_id')
@@ -253,84 +254,117 @@ class StudentResource extends Resource
                 Section::make('Identitas Ayah')
                     ->columns(2)
                     ->schema([
+                        Select::make('father_status')
+                            ->label(__('father_status'))
+                            ->options(ParentStatusEnum::class)
+                            ->default(ParentStatusEnum::Alive->value)
+                            ->reactive()
+                            ->required(),
                         TextInput::make('father_nik')
                             ->label(__('father_nik'))
                             ->reactive()
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('father_name')
                             ->label(__('father_name'))
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         DatePicker::make('father_birthday')
                             ->label(__('father_birthday'))
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('father_city_born')
                             ->label(__('father_city_born'))
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Select::make('father_religion')
                             ->label(__('father_religion'))
                             ->options(ReligionEnum::class)
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Select::make('father_education')
                             ->label(__('father_education'))
                             ->options(EducationEnum::class)
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('father_relation')
                             ->label(__('father_relation'))
                             ->options(ChildRelationEnum::class)
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('father_job')
                             ->label(__('father_job'))
                             ->options(JobEnum::class)
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('father_income')
                             ->label(__('father_income'))
                             ->options(IncomeEnum::class)
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('father_phone')
                             ->prefix('+62')
                             ->numeric()
                             ->label(__('father_phone'))
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                     ]),
                 Section::make('Identitas Ibu')
                     ->columns(2)
                     ->schema([
+                        Select::make('mother_status')
+                            ->label(__('mother_status'))
+                            ->options(ParentStatusEnum::class)
+                            ->default(ParentStatusEnum::Alive->value)
+                            ->reactive()
+                            ->required(),
                         TextInput::make('mother_nik')
                             ->label(__('mother_nik'))
+                            ->reactive()
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('mother_name')
                             ->label(__('mother_name'))
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         DatePicker::make('mother_birthday')
                             ->label(__('mother_birthday'))
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('mother_city_born')
                             ->label(__('mother_city_born'))
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Select::make('mother_religion')
                             ->label(__('mother_religion'))
                             ->options(ReligionEnum::class)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Select::make('mother_education')
                             ->label(__('mother_education'))
                             ->options(EducationEnum::class)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('mother_relation')
                             ->label(__('mother_relation'))
                             ->options(ChildRelationEnum::class)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('mother_job')
                             ->label(__('mother_job'))
                             ->options(JobEnum::class)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         Radio::make('mother_income')
                             ->label(__('mother_income'))
                             ->options(IncomeEnum::class)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         TextInput::make('mother_phone')
                             ->prefix('+62')
                             ->numeric()
                             ->label(__('mother_phone'))
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                     ]),
                 Section::make('Unggah File')
@@ -356,6 +390,7 @@ class StudentResource extends Resource
                             ->directory('ktp')
                             ->imageEditor()
                             ->image()
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
                             ->openable()
@@ -363,6 +398,7 @@ class StudentResource extends Resource
                             ->directory('ktp')
                             ->imageEditor()
                             ->image()
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()

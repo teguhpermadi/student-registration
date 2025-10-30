@@ -22,11 +22,15 @@ class ListStudents extends ListRecords
     // tabs
     public function getTabs(): array
     {
-        return [
-            'not_resign' => Tab::make('Aktif')
-                ->query(fn (Builder $query) => $query->where('is_resign', false)),
-            'resign' => Tab::make('Mengundurkan Diri')
-                ->query(fn (Builder $query) => $query->where('is_resign', true)),
-        ];
+        if (auth()->user()->hasRole('admin')) {
+            return [
+                'not_resign' => Tab::make('Aktif')
+                    ->query(fn (Builder $query) => $query->where('is_resign', false)),
+                'resign' => Tab::make('Mengundurkan Diri')
+                    ->query(fn (Builder $query) => $query->where('is_resign', true)),
+            ];
+        }
+        
+        return [];
     }
 }
