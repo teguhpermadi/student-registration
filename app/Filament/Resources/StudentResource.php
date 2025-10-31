@@ -28,6 +28,7 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -370,6 +371,51 @@ class StudentResource extends Resource
                             ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                     ]),
+                    Section::make('Identitas Wali')
+                        ->description(__('guardian_description'))
+                        ->columns(2)
+                        ->schema([
+                            Toggle::make('guardian_status')
+                                ->label(__('guardian_status'))
+                                ->reactive(),
+                            TextInput::make('guardian_nik')
+                                ->label(__('guardian_nik'))
+                                ->reactive()
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            TextInput::make('guardian_name')
+                                ->label(__('guardian_name'))
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            DatePicker::make('guardian_birthday')
+                                ->label(__('guardian_birthday'))
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            TextInput::make('guardian_city_born')
+                                ->label(__('guardian_city_born'))
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            Select::make('guardian_religion')
+                                ->label(__('guardian_religion'))
+                                ->options(ReligionEnum::class)
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            Select::make('guardian_education')
+                                ->label(__('guardian_education'))
+                                ->options(EducationEnum::class)
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            TextInput::make('guardian_relation')
+                                ->label(__('guardian_relation'))
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            Select::make('guardian_job')
+                                ->label(__('guardian_job'))
+                                ->options(JobEnum::class)
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            Radio::make('guardian_income')
+                                ->label(__('guardian_income'))
+                                ->options(IncomeEnum::class)
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                            TextInput::make('guardian_phone')
+                                ->prefix('+62')
+                                ->numeric()
+                                ->label(__('guardian_phone'))
+                                ->visible(fn (Get $get) => $get('guardian_status') === true),
+                        ]),
                 Section::make('Unggah File')
                     ->columns(2)
                     ->schema([

@@ -291,5 +291,17 @@
     "filament-autograph::filament-autograph.actions.clear.label": "Hapus",
     "filament-autograph::filament-autograph.actions.undo.label": "Batalkan",
     "father_status" : "Status Ayah",
-    "mother_status" : "Status Ibu"
+    "mother_status" : "Status Ibu",
+    "guardian_status" : "Status Wali",
+    "guardian_nik" : "NIK Wali",
+    "guardian_name" : "Nama Wali",
+    "guardian_city_born" : "Tempat Lahir Wali",
+    "guardian_birthday" : "Tanggal Lahir Wali",
+    "guardian_religion" : "Agama Wali",
+    "guardian_education" : "Pendidikan Terakhir Wali",
+    "guardian_relation" : "Hubungan dengan Siswa",
+    "guardian_job" : "Pekerjaan Wali",
+    "guardian_income" : "Penghasilan Wali",
+    "guardian_phone" : "Telp Wali",
+    "guardian_description" : "Data berikut ini diisi jika anak diasuh oleh wali. Tetapi jika anak diasuh oleh ayah atau ibu, maka data wali tidak perlu diisi."
 }
