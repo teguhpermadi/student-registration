@@ -40,6 +40,9 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('created_at')
+                    ->date('d-m-Y')
+                    ->label('Dibuat pada'),
                 TextColumn::make('name')
                     ->label('Nama akun'),
                 TextColumn::make('email'),
