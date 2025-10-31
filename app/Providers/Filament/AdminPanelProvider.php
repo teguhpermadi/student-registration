@@ -73,12 +73,11 @@ class AdminPanelProvider extends PanelProvider
                         (4) Scan KTP Ayah;
                         (5) Scan KTP Ibu;
                         (6) Scan Kartu NISN.')
-                    
-                    // ->action(
-                    //     Action::make('Formulir')
-                    //         ->url(route('filament.admin.pages.student-registration'))
-                    //         ->icon('heroicon-m-plus')
-                    // )
+                    ->action(
+                        Action::make('Formulir')
+                            ->url(fn (): string => route('filament.admin.resources.students.create'))
+                            ->icon('heroicon-m-plus')
+                    )
                     ->columnSpan('full'),
             ])
             ->authMiddleware([

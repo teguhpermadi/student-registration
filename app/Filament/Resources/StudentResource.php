@@ -76,6 +76,7 @@ class StudentResource extends Resource
             ->schema([
                 SimpleAlert::make('instruction')
                     ->title('Info')
+                    ->columnSpanFull()
                     // ->description('Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> Pas foto 3 x 4, Scan Akta Lahir, Scan Kartu Keluarga, Scan KTP Ayah, Scan KTP Ibu, Scan Kartu NISN')
                     ->description(fn() => new HtmlString('<p>
                                     Sebelum mengisi formulir berikut ini pastikan anda sudah memiliki: <br/> 
@@ -139,6 +140,8 @@ class StudentResource extends Resource
                             ->options(AcademicYear::all()->pluck('year', 'id'))
                             ->label(__('academic_year_id'))
                             ->reactive()
+                            ->disabled()
+                            ->default(AcademicYear::active()->first()->id)
                             ->required(),
                         Select::make('category')
                             ->options(function (Get $get) {
@@ -547,7 +550,11 @@ class StudentResource extends Resource
                 if (auth()->user()->hasRole('student')) {
                     $query->where('user_id', auth()->user()->id);
                 }
-            });
+            })
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->emptyStateDescription("Silahkan klik tombol berikut ini untuk menambahkan data siswa baru.");
     }
 
     public static function getRelations(): array
