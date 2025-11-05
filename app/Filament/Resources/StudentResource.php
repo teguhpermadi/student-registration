@@ -137,15 +137,13 @@ class StudentResource extends Resource
                 Section::make('Formulir Siswa Baru')
                     ->columns(2)
                     ->schema([
-                        // Select::make('academic_year_id')
-                        //     ->options(AcademicYear::all()->pluck('year', 'id'))
-                        //     ->label(__('academic_year_id'))
-                        //     ->reactive()
-                        //     ->disabled()
-                        //     ->default(AcademicYear::active()->first()->id)
-                        //     ->required(),
-                        Hidden::make('academic_year_id')
-                            ->default(AcademicYear::active()->first()->id),
+                        Select::make('academic_year_id')
+                            ->options(AcademicYear::all()->pluck('year', 'id'))
+                            ->label(__('academic_year_id'))
+                            ->reactive()
+                            ->disabled()
+                            ->default(AcademicYear::active()->first()->id)
+                            ->required(),
                         Select::make('category')
                             ->options(function (Get $get) {
                                 $option = [];
@@ -217,8 +215,10 @@ class StudentResource extends Resource
                         FileUpload::make('photo')
                             ->openable()
                             ->directory('photo')
+                            ->image()
                             ->imageEditor()
                             ->label(__('photo'))
+                            ->optimize('jpeg')
                             ->helperText('Pas foto 3x4')
                             ->required(),
                     ]),
@@ -423,12 +423,14 @@ class StudentResource extends Resource
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('akta_lahir')
+                            ->image()
                             ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('kartu_keluarga')
+                            ->image()
                             ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
@@ -436,6 +438,7 @@ class StudentResource extends Resource
                             ->helperText('Format file gambar')
                             ->directory('ktp')
                             ->imageEditor()
+                            ->image()
                             ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
@@ -443,12 +446,14 @@ class StudentResource extends Resource
                             ->helperText('Format file gambar')
                             ->directory('ktp')
                             ->imageEditor()
-                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
+                            ->image()
+                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('nisn')
+                            ->image()
                             ->imageEditor(),
 
                     ]),
@@ -521,7 +526,8 @@ class StudentResource extends Resource
                                                     pond.removeFiles({ revert: false });
                                                     pond.addFile($event.detail);
                                                 }, 750);',
-                                    ]),
+                                    ])
+                                    ->image(),
                             ]),
                     ]),
             ]);
