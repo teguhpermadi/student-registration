@@ -156,7 +156,8 @@ class PaymentResource extends Resource
                     ->url(route('filament.admin.resources.payments.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getRelations(): array

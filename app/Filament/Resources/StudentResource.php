@@ -563,7 +563,12 @@ class StudentResource extends Resource
                         'Inklusi' => 'Inklusi',
                     ])
                     ->label(__('category')),
+                SelectFilter::make('academic_year_id')
+                    ->options(AcademicYear::all()->pluck('year', 'id'))
+                    ->label(__('academic_year'))
+                    ->default(AcademicYear::active()->first()->id),
             ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
