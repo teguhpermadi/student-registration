@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentResource\Pages;
 use App\Filament\Resources\PaymentResource\RelationManagers;
+use App\Models\AcademicYear;
 use App\Models\Payment;
 use App\PaymentEnum;
 use Filament\Forms;
@@ -131,7 +132,7 @@ class PaymentResource extends Resource
                     ->date(),
             ])
             ->filters([
-                //
+                // 
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -156,7 +157,8 @@ class PaymentResource extends Resource
                     ->url(route('filament.admin.resources.payments.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
-            ]);
+            ])
+            ->defaultSort('date_of_verifying', 'desc');
     }
 
     public static function getRelations(): array

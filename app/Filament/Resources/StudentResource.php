@@ -557,6 +557,10 @@ class StudentResource extends Resource
                         'Inklusi' => 'Inklusi',
                     ])
                     ->label(__('category')),
+                Select::make('academic_year_id')
+                    ->label('Tahun Ajaran')
+                    ->options(AcademicYear::all()->pluck('year', 'id'))
+                    ->default(AcademicYear::active()->first()->id),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
