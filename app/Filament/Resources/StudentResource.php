@@ -554,7 +554,8 @@ class StudentResource extends Resource
                     ->label(__('mother_phone'))
                     ->copyable(),
                 TextColumn::make('updated_at')
-                    ->label(__('updated_at')),
+                    ->label(__('updated_at'))
+                    ->dateTime(),
             ])
             ->filters([
                 SelectFilter::make('category')

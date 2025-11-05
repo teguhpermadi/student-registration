@@ -118,7 +118,7 @@ class PaymentResource extends Resource
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->label('Tanggal Penyerahan Bukti')
-                    ->date(),
+                    ->dateTime(),
                 IconColumn::make('verified')
                     ->label('Verifikasi')
                     ->boolean()
@@ -128,7 +128,7 @@ class PaymentResource extends Resource
                     }),
                 TextColumn::make('date_of_verifying')
                     ->label('Tanggal verifikasi')
-                    ->date(),
+                    ->dateTime(),
             ])
             ->filters([
                 //
