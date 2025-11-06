@@ -215,7 +215,6 @@ class StudentResource extends Resource
                         FileUpload::make('photo')
                             ->openable()
                             ->directory('photo')
-                            ->image()
                             ->imageEditor()
                             ->label(__('photo'))
                             ->optimize('jpeg')
@@ -423,14 +422,12 @@ class StudentResource extends Resource
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('akta_lahir')
-                            ->image()
                             ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_kartu_keluarga')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('kartu_keluarga')
-                            ->image()
                             ->imageEditor()
                             ->required(),
                         FileUpload::make('scan_ktp_ayah')
@@ -438,7 +435,6 @@ class StudentResource extends Resource
                             ->helperText('Format file gambar')
                             ->directory('ktp')
                             ->imageEditor()
-                            ->image()
                             ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_ktp_ibu')
@@ -446,14 +442,12 @@ class StudentResource extends Resource
                             ->helperText('Format file gambar')
                             ->directory('ktp')
                             ->imageEditor()
-                            ->image()
                             ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
                             ->helperText('Format file gambar')
                             ->directory('nisn')
-                            ->image()
                             ->imageEditor(),
 
                     ]),
@@ -526,8 +520,7 @@ class StudentResource extends Resource
                                                     pond.removeFiles({ revert: false });
                                                     pond.addFile($event.detail);
                                                 }, 750);',
-                                    ])
-                                    ->image(),
+                                    ]),
                             ]),
                     ]),
             ]);
