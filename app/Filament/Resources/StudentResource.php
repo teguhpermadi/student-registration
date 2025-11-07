@@ -444,7 +444,7 @@ class StudentResource extends Resource
                             ->helperText('Format file gambar')
                             ->directory('ktp')
                             ->imageEditor()
-                            ->visible(fn (Get $get) => $get('father_status') === ParentStatusEnum::Alive->value)
+                            ->visible(fn (Get $get) => $get('mother_status') === ParentStatusEnum::Alive->value)
                             ->required(),
                         FileUpload::make('scan_nisn')
                             ->openable()
