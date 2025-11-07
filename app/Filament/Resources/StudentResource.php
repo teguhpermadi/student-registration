@@ -137,13 +137,15 @@ class StudentResource extends Resource
                 Section::make('Formulir Siswa Baru')
                     ->columns(2)
                     ->schema([
-                        Select::make('academic_year_id')
-                            ->options(AcademicYear::all()->pluck('year', 'id'))
-                            ->label(__('academic_year_id'))
-                            ->reactive()
-                            ->disabled()
-                            ->default(AcademicYear::active()->first()->id)
-                            ->required(),
+                        // Select::make('academic_year_id')
+                        //     ->options(AcademicYear::all()->pluck('year', 'id'))
+                        //     ->label(__('academic_year_id'))
+                        //     ->reactive()
+                        //     ->disabled()
+                        //     ->default(AcademicYear::active()->first()->id)
+                        //     ->required(),
+                        Hidden::make('academic_year_id')
+                            ->default(AcademicYear::active()->first()->id),
                         Select::make('category')
                             ->options(function (Get $get) {
                                 $option = [];
